@@ -203,6 +203,12 @@ export const LeadsView: React.FC = () => {
 
   useEffect(() => {
     const fetchLeads = async () => {
+      if (!supabase) {
+        console.warn('Supabase not configured. Running in mock local state mode.');
+        setLeads(initialSeedLeads);
+        setLoading(false);
+        return;
+      }
       setLoading(true);
       try {
         const { data, error } = await supabase
@@ -338,6 +344,11 @@ export const LeadsView: React.FC = () => {
     setLeads((prev) =>
       prev.map((l) => (selectedLeadIds.includes(l.id) ? { ...l, assignee: agentName } : l))
     );
+    if (!supabase) {
+      alert(`Assigned ${selectedLeadIds.length} leads to ${agentName}`);
+      setSelectedLeadIds([]);
+      return;
+    }
     const { error } = await supabase
       .from('leads')
       .update({ assignee: agentName })
@@ -352,6 +363,11 @@ export const LeadsView: React.FC = () => {
     setLeads((prev) =>
       prev.map((l) => (selectedLeadIds.includes(l.id) ? { ...l, stage: newStage } : l))
     );
+    if (!supabase) {
+      alert(`Moved ${selectedLeadIds.length} leads to ${newStage.toUpperCase()}`);
+      setSelectedLeadIds([]);
+      return;
+    }
     const { error } = await supabase
       .from('leads')
       .update({ stage: newStage })
@@ -366,6 +382,10 @@ export const LeadsView: React.FC = () => {
     if (confirm(`Are you sure you want to delete ${selectedLeadIds.length} selected leads?`)) {
       const originalLeads = [...leads];
       setLeads((prev) => prev.filter((l) => !selectedLeadIds.includes(l.id)));
+      if (!supabase) {
+        setSelectedLeadIds([]);
+        return;
+      }
       const { error } = await supabase
         .from('leads')
         .delete()
@@ -400,6 +420,8 @@ export const LeadsView: React.FC = () => {
         prev.map((l) => (l.id === leadId ? { ...l, stage: newStage, timeline: updatedTimeline } : l))
       );
 
+      if (!supabase) return;
+
       const { error } = await supabase
         .from('leads')
         .update({ stage: newStage, timeline: updatedTimeline })
@@ -428,6 +450,8 @@ export const LeadsView: React.FC = () => {
     if (activeLead && activeLead.id === leadId) {
       setActiveLead((prev) => (prev ? { ...prev, assignee: agent, timeline: [newEvent, ...prev.timeline] } : null));
     }
+
+    if (!supabase) return;
 
     const { error } = await supabase
       .from('leads')
@@ -479,6 +503,8 @@ export const LeadsView: React.FC = () => {
     );
 
     setNoteInput('');
+
+    if (!supabase) return;
 
     const { error } = await supabase
       .from('leads')
@@ -541,6 +567,26 @@ export const LeadsView: React.FC = () => {
 
     setLeads((prev) => [createdItem, ...prev]);
     setIsAddOpen(false);
+
+    if (!supabase) {
+      setNewLead({
+        name: '',
+        email: '',
+        phone: '',
+        destination: 'Amalfi Coast, Italy',
+        budget: '',
+        source: 'Direct Search',
+        assignee: 'Fazil Arshiya',
+        description: '',
+      });
+      setClientNameError('');
+      setCountryCode('+91');
+      setPhoneNumberVal('');
+      if (duplicateDetected) {
+        alert(`⚠️ Potential duplicate detected. Lead created with warnings. View in profile.`);
+      }
+      return;
+    }
 
     const { error } = await supabase
       .from('leads')
@@ -1358,6 +1404,7 @@ export const LeadsView: React.FC = () => {
                         const newStage = e.target.value as LeadItem['stage'];
                         setLeads((prev) => prev.map((l) => (l.id === activeLead.id ? { ...l, stage: newStage } : l)));
                         setActiveLead((prev) => (prev ? { ...prev, stage: newStage } : null));
+                        if (!supabase) return;
                         const { error } = await supabase
                           .from('leads')
                           .update({ stage: newStage })

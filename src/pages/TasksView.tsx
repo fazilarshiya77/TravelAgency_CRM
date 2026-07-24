@@ -95,6 +95,12 @@ export const TasksView: React.FC = () => {
 
   useEffect(() => {
     const fetchTasks = async () => {
+      if (!supabase) {
+        console.warn('Supabase not configured. Running in mock local state mode.');
+        setTasks(initialSeedTasks);
+        setLoading(false);
+        return;
+      }
       setLoading(true);
       try {
         const { data, error } = await supabase
@@ -154,6 +160,8 @@ export const TasksView: React.FC = () => {
       prev.map((t) => (t.id === taskId ? { ...t, completed: !t.completed } : t))
     );
 
+    if (!supabase) return;
+
     const { error } = await supabase
       .from('tasks')
       .update({ completed: !taskToUpdate.completed })
@@ -172,6 +180,8 @@ export const TasksView: React.FC = () => {
     if (confirm('Are you sure you want to delete this task?')) {
       const originalTasks = [...tasks];
       setTasks((prev) => prev.filter((t) => t.id !== taskId));
+
+      if (!supabase) return;
 
       const { error } = await supabase
         .from('tasks')
@@ -208,6 +218,8 @@ export const TasksView: React.FC = () => {
     setNewDueDate('');
     setNewPriority('medium');
     setNewClient('');
+
+    if (!supabase) return;
 
     const { error } = await supabase
       .from('tasks')

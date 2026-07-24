@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { supabase } from '../lib/supabaseClient';
 import { Card } from '../components/ui/Card';
 import { Table, type TableColumn } from '../components/ui/Table';
 import { Tag } from '../components/ui/Tag';
@@ -68,7 +69,7 @@ interface LeadItem {
 export const LeadsView: React.FC = () => {
   const { triggerAICommand } = useNavigation();
   // 1. CRM Lead state holding mock database
-  const [leads, setLeads] = useState<LeadItem[]>([
+  const initialSeedLeads: LeadItem[] = [
     {
       id: 'L-101',
       name: 'Amit Sharma',
@@ -98,45 +99,39 @@ export const LeadsView: React.FC = () => {
         { date: '2026-07-22 09:30', subject: 'Amalfi Package Flight Layouts', body: 'Hi Amit, I have attached the Lufthansa business class seating diagram for your review.', incoming: false },
       ],
       whatsappHistory: [
-        { date: '2026-07-21 16:45', body: 'Hello Mr. Sharma! Here are the private ocean-view balcony photos for the Villa d’Este package.', incoming: false },
-        { date: '2026-07-21 16:50', body: 'Wow, those look incredible. Does this package include airport pickup?', incoming: true },
+        { date: '2026-07-21 16:45', body: 'Hi Amit, here are the direct villa pictures for the Amalfi Coast stay. Let me know which date suits you.', incoming: false },
       ],
     },
     {
       id: 'L-102',
       name: 'Priya Patel',
-      email: 'priya@patel.com',
+      email: 'priya@patel.co.in',
       phone: '+91-91234-56789',
-      destination: 'Kyoto Sanctuary Package',
-      budget: 9200,
-      probability: 78,
-      score: 84,
-      source: 'Direct Search',
+      destination: 'Kyoto Sanctuary, Japan',
+      budget: 8200,
+      probability: 75,
+      score: 82,
+      source: 'Organic Search',
       stage: 'inquiry',
       assignee: 'Sophia Loren',
-      tags: ['Kyoto', 'Solo', 'Wellness'],
+      tags: ['Kyoto', 'Wellness'],
       isDuplicate: false,
-      notes: [
-        { date: '2026-07-23 10:00', text: 'Wants to include a traditional Zen meditation session.', author: 'Sophia Loren' },
-      ],
+      notes: [],
       timeline: [
-        { date: '2026-07-23 10:00', title: 'Note Logged', desc: 'Zen session requirements logged', type: 'system' },
-        { date: '2026-07-22 15:30', title: 'Inquiry Created', desc: 'Submitted Kyoto Zen inquiry form', type: 'system' },
+        { date: '2026-07-22 10:00', title: 'Inquiry Received', desc: 'Sought premium custom wellness itineraries', type: 'system' },
       ],
-      emailHistory: [
-        { date: '2026-07-22 15:45', subject: 'Welcome to Naaz Travels Agency', body: 'Hi Priya, thank you for reaching out. We are drafting your wellness itinerary.', incoming: false },
-      ],
+      emailHistory: [],
       whatsappHistory: [],
     },
     {
       id: 'L-103',
       name: 'Rajesh Iyer',
-      email: 'rajesh@iyer.co.in',
-      phone: '+91-98100-23456',
-      destination: 'Serengeti Photo Safari',
-      budget: 32000,
-      probability: 61,
-      score: 72,
+      email: 'rajesh@iyer.com',
+      phone: '+91-99887-76655',
+      destination: 'Serengeti Safari, Tanzania',
+      budget: 23000,
+      probability: 60,
+      score: 74,
       source: 'Google Campaign',
       stage: 'negotiation',
       assignee: 'Liam Neeson',
@@ -201,7 +196,81 @@ export const LeadsView: React.FC = () => {
       ],
       whatsappHistory: [],
     },
-  ]);
+  ];
+
+  const [leads, setLeads] = useState<LeadItem[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchLeads = async () => {
+      setLoading(true);
+      try {
+        const { data, error } = await supabase
+          .from('leads')
+          .select('*')
+          .order('created_at', { ascending: false });
+
+        if (error) {
+          console.error('Error fetching leads from Supabase:', error);
+        } else if (data && data.length > 0) {
+          setLeads(data.map(item => ({
+            id: item.id,
+            name: item.name,
+            email: item.email || '',
+            phone: item.phone || '',
+            destination: item.destination || '',
+            budget: Number(item.budget) || 0,
+            probability: Number(item.probability) || 50,
+            score: Number(item.score) || 50,
+            source: item.source || 'Direct',
+            stage: item.stage || 'inquiry',
+            assignee: item.assignee || 'Sophia Loren',
+            tags: item.tags || [],
+            isDuplicate: item.is_duplicate || false,
+            notes: item.notes || [],
+            timeline: item.timeline || [],
+            emailHistory: item.email_history || [],
+            whatsappHistory: item.whatsapp_history || []
+          })));
+        } else {
+          // Seed the database
+          const { error: seedError } = await supabase
+            .from('leads')
+            .insert(
+              initialSeedLeads.map(l => ({
+                id: l.id,
+                name: l.name,
+                email: l.email,
+                phone: l.phone,
+                destination: l.destination,
+                budget: l.budget,
+                probability: l.probability,
+                score: l.score,
+                source: l.source,
+                stage: l.stage,
+                assignee: l.assignee,
+                tags: l.tags,
+                is_duplicate: l.isDuplicate,
+                notes: l.notes,
+                timeline: l.timeline,
+                email_history: l.emailHistory,
+                whatsapp_history: l.whatsappHistory,
+              }))
+            );
+          if (!seedError) {
+            setLeads(initialSeedLeads);
+          }
+        }
+      } catch (err) {
+        console.error('Fetch leads exception:', err);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchLeads();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   // 2. View States
   const [viewMode, setViewMode] = useState<'kanban' | 'table'>('table');
@@ -264,84 +333,111 @@ export const LeadsView: React.FC = () => {
   };
 
   // 6. Bulk Action Handlers
-  const handleBulkAssign = (agentName: string) => {
+  const handleBulkAssign = async (agentName: string) => {
     if (selectedLeadIds.length === 0) return;
     setLeads((prev) =>
       prev.map((l) => (selectedLeadIds.includes(l.id) ? { ...l, assignee: agentName } : l))
     );
+    const { error } = await supabase
+      .from('leads')
+      .update({ assignee: agentName })
+      .in('id', selectedLeadIds);
+    if (error) console.error('Error in bulk assign:', error);
     alert(`Assigned ${selectedLeadIds.length} leads to ${agentName}`);
     setSelectedLeadIds([]);
   };
 
-  const handleBulkStageChange = (newStage: LeadItem['stage']) => {
+  const handleBulkStageChange = async (newStage: LeadItem['stage']) => {
     if (selectedLeadIds.length === 0) return;
     setLeads((prev) =>
       prev.map((l) => (selectedLeadIds.includes(l.id) ? { ...l, stage: newStage } : l))
     );
+    const { error } = await supabase
+      .from('leads')
+      .update({ stage: newStage })
+      .in('id', selectedLeadIds);
+    if (error) console.error('Error in bulk stage change:', error);
     alert(`Moved ${selectedLeadIds.length} leads to ${newStage.toUpperCase()}`);
     setSelectedLeadIds([]);
   };
 
-  const handleBulkDelete = () => {
+  const handleBulkDelete = async () => {
     if (selectedLeadIds.length === 0) return;
     if (confirm(`Are you sure you want to delete ${selectedLeadIds.length} selected leads?`)) {
+      const originalLeads = [...leads];
       setLeads((prev) => prev.filter((l) => !selectedLeadIds.includes(l.id)));
+      const { error } = await supabase
+        .from('leads')
+        .delete()
+        .in('id', selectedLeadIds);
+      if (error) {
+        console.error('Error in bulk delete:', error);
+        setLeads(originalLeads);
+      }
       setSelectedLeadIds([]);
     }
   };
 
   // 7. Dynamic Stage Mover for Kanban cards (simulates smooth dnd)
-  const moveLeadStage = (leadId: string, direction: 'forward' | 'backward') => {
+  const moveLeadStage = async (leadId: string, direction: 'forward' | 'backward') => {
     const stages: LeadItem['stage'][] = ['inquiry', 'proposal', 'negotiation', 'booked'];
-    setLeads((prev) =>
-      prev.map((l) => {
-        if (l.id !== leadId) return l;
-        const currIdx = stages.indexOf(l.stage);
-        let nextIdx = direction === 'forward' ? currIdx + 1 : currIdx - 1;
-        if (nextIdx >= 0 && nextIdx < stages.length) {
-          const newStage = stages[nextIdx];
-          const newEvent: TimelineEvent = {
-            date: new Date().toISOString().replace('T', ' ').substring(0, 16),
-            title: 'Stage Shifted',
-            desc: `Moved manually to ${newStage.toUpperCase()}`,
-            type: 'system',
-          };
-          return {
-            ...l,
-            stage: newStage,
-            timeline: [newEvent, ...l.timeline],
-          };
-        }
-        return l;
-      })
-    );
-  };
+    const lead = leads.find((l) => l.id === leadId);
+    if (!lead) return;
 
-  // 8. Individual Action Handler inside drawer: Assignee selection
-  const handleAssignSingle = (leadId: string, agent: string) => {
-    setLeads((prev) =>
-      prev.map((l) => {
-        if (l.id !== leadId) return l;
-        const newEvent: TimelineEvent = {
-          date: new Date().toISOString().replace('T', ' ').substring(0, 16),
-          title: 'Assignee Changed',
-          desc: `Assigned to agent ${agent}`,
-          type: 'system',
-        };
-        return {
-          ...l,
-          assignee: agent,
-          timeline: [newEvent, ...l.timeline],
-        };
-      })
-    );
-    if (activeLead && activeLead.id === leadId) {
-      setActiveLead((prev) => (prev ? { ...prev, assignee: agent } : null));
+    const currIdx = stages.indexOf(lead.stage);
+    let nextIdx = direction === 'forward' ? currIdx + 1 : currIdx - 1;
+    if (nextIdx >= 0 && nextIdx < stages.length) {
+      const newStage = stages[nextIdx];
+      const newEvent: TimelineEvent = {
+        date: new Date().toISOString().replace('T', ' ').substring(0, 16),
+        title: 'Stage Shifted',
+        desc: `Moved manually to ${newStage.toUpperCase()}`,
+        type: 'system',
+      };
+      const updatedTimeline = [newEvent, ...lead.timeline];
+
+      setLeads((prev) =>
+        prev.map((l) => (l.id === leadId ? { ...l, stage: newStage, timeline: updatedTimeline } : l))
+      );
+
+      const { error } = await supabase
+        .from('leads')
+        .update({ stage: newStage, timeline: updatedTimeline })
+        .eq('id', leadId);
+      if (error) console.error('Error in moveLeadStage:', error);
     }
   };
 
+  // 8. Individual Action Handler inside drawer: Assignee selection
+  const handleAssignSingle = async (leadId: string, agent: string) => {
+    const lead = leads.find((l) => l.id === leadId);
+    if (!lead) return;
+
+    const newEvent: TimelineEvent = {
+      date: new Date().toISOString().replace('T', ' ').substring(0, 16),
+      title: 'Assignee Changed',
+      desc: `Assigned to agent ${agent}`,
+      type: 'system',
+    };
+    const updatedTimeline = [newEvent, ...lead.timeline];
+
+    setLeads((prev) =>
+      prev.map((l) => (l.id === leadId ? { ...l, assignee: agent, timeline: updatedTimeline } : l))
+    );
+
+    if (activeLead && activeLead.id === leadId) {
+      setActiveLead((prev) => (prev ? { ...prev, assignee: agent, timeline: [newEvent, ...prev.timeline] } : null));
+    }
+
+    const { error } = await supabase
+      .from('leads')
+      .update({ assignee: agent, timeline: updatedTimeline })
+      .eq('id', leadId);
+    if (error) console.error('Error in handleAssignSingle:', error);
+  };
+
   // 9. Notes Logger handler
-  const handleAddNote = (e: React.FormEvent) => {
+  const handleAddNote = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!noteInput.trim() || !activeLead) return;
 
@@ -358,13 +454,16 @@ export const LeadsView: React.FC = () => {
       type: 'system',
     };
 
+    const updatedNotes = [newNote, ...activeLead.notes];
+    const updatedTimeline = [newEvent, ...activeLead.timeline];
+
     setLeads((prev) =>
       prev.map((l) => {
         if (l.id !== activeLead.id) return l;
         return {
           ...l,
-          notes: [newNote, ...l.notes],
-          timeline: [newEvent, ...l.timeline],
+          notes: updatedNotes,
+          timeline: updatedTimeline,
         };
       })
     );
@@ -373,17 +472,23 @@ export const LeadsView: React.FC = () => {
       prev
         ? {
             ...prev,
-            notes: [newNote, ...prev.notes],
-            timeline: [newEvent, ...prev.timeline],
+            notes: updatedNotes,
+            timeline: updatedTimeline,
           }
         : null
     );
 
     setNoteInput('');
+
+    const { error } = await supabase
+      .from('leads')
+      .update({ notes: updatedNotes, timeline: updatedTimeline })
+      .eq('id', activeLead.id);
+    if (error) console.error('Error in handleAddNote:', error);
   };
 
   // 10. Add New Lead validation & submission (includes duplicate alert scoring)
-  const handleAddLead = (e: React.FormEvent) => {
+  const handleAddLead = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!newLead.name || !newLead.destination) return;
 
@@ -392,7 +497,7 @@ export const LeadsView: React.FC = () => {
       (l) => l.name.toLowerCase() === newLead.name.toLowerCase()
     );
 
-    const generatedId = 'L-' + (100 + leads.length + 1);
+    const generatedId = 'L-' + (100 + Date.now().toString().substring(10));
     const budgetVal = parseFloat(newLead.budget) || 5000;
 
     // AI qualifies new leads with simulated scoring bounds
@@ -436,6 +541,37 @@ export const LeadsView: React.FC = () => {
 
     setLeads((prev) => [createdItem, ...prev]);
     setIsAddOpen(false);
+
+    const { error } = await supabase
+      .from('leads')
+      .insert([
+        {
+          id: createdItem.id,
+          name: createdItem.name,
+          email: createdItem.email,
+          phone: createdItem.phone,
+          destination: createdItem.destination,
+          budget: createdItem.budget,
+          probability: createdItem.probability,
+          score: createdItem.score,
+          source: createdItem.source,
+          stage: createdItem.stage,
+          assignee: createdItem.assignee,
+          tags: createdItem.tags,
+          is_duplicate: createdItem.isDuplicate,
+          notes: createdItem.notes,
+          timeline: createdItem.timeline,
+          email_history: createdItem.emailHistory,
+          whatsapp_history: createdItem.whatsappHistory,
+        }
+      ]);
+
+    if (error) {
+      console.error('Error inserting lead to Supabase:', error);
+      // Revert local state
+      setLeads((prev) => prev.filter((l) => l.id !== generatedId));
+      alert('Failed to save lead in database: ' + error.message);
+    }
     setNewLead({
       name: '',
       email: '',
@@ -548,6 +684,21 @@ export const LeadsView: React.FC = () => {
       ),
     },
   ];
+
+  if (loading) {
+    return (
+      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', height: '60vh', flexDirection: 'column', gap: '1rem' }}>
+        <style>{`
+          @keyframes custom-spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+          }
+        `}</style>
+        <div style={{ width: '40px', height: '40px', border: '4px solid var(--border-light)', borderTopColor: 'var(--color-secondary)', borderRadius: '50%', animation: 'custom-spin 1s linear infinite' }} />
+        <span style={{ fontSize: '0.9rem', color: 'var(--text-secondary)' }}>Syncing with Supabase Live Database...</span>
+      </div>
+    );
+  }
 
   return (
     <div style={{ display: 'flex', flexDirection: 'column', gap: '2rem', animation: 'page-enter 0.4s ease-out forwards', position: 'relative' }}>
@@ -1203,10 +1354,15 @@ export const LeadsView: React.FC = () => {
                     </span>
                     <select
                       value={activeLead.stage}
-                      onChange={(e) => {
+                      onChange={async (e) => {
                         const newStage = e.target.value as LeadItem['stage'];
                         setLeads((prev) => prev.map((l) => (l.id === activeLead.id ? { ...l, stage: newStage } : l)));
                         setActiveLead((prev) => (prev ? { ...prev, stage: newStage } : null));
+                        const { error } = await supabase
+                          .from('leads')
+                          .update({ stage: newStage })
+                          .eq('id', activeLead.id);
+                        if (error) console.error('Error overriding stage:', error);
                       }}
                       style={{ width: '100%', padding: '8px', fontSize: '0.85rem', border: '1px solid var(--border-light)', borderRadius: '8px', outline: 'none' }}
                     >

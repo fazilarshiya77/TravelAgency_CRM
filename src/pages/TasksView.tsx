@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { supabase } from '../lib/supabaseClient';
 import { Card } from '../components/ui/Card';
 import { Button } from '../components/ui/Button';
 import { Tag } from '../components/ui/Tag';
@@ -26,59 +27,62 @@ interface TaskItem {
   category: 'inquiry' | 'booking' | 'document' | 'payment';
 }
 
+const initialSeedTasks: TaskItem[] = [
+  {
+    id: 'TSK-101',
+    title: 'Submit Amit Sharma Schengen Visa application details',
+    dueDate: '2026-07-24', // Today
+    priority: 'high',
+    assignee: 'Sophia Loren',
+    client: 'Amit Sharma',
+    completed: false,
+    category: 'document',
+  },
+  {
+    id: 'TSK-102',
+    title: 'Verify Priya Patel Kyoto Tea Ceremony booking confirmation',
+    dueDate: '2026-07-25', // Tomorrow
+    priority: 'medium',
+    assignee: 'Sophia Loren',
+    client: 'Priya Patel',
+    completed: false,
+    category: 'booking',
+  },
+  {
+    id: 'TSK-103',
+    title: 'Issue Rajesh Iyer outbound flight ticket voucher',
+    dueDate: '2026-07-27',
+    priority: 'high',
+    assignee: 'Liam Neeson',
+    client: 'Rajesh Iyer',
+    completed: false,
+    category: 'booking',
+  },
+  {
+    id: 'TSK-104',
+    title: 'Assign local mountain guide for Vikram Malhotra Alps trek',
+    dueDate: '2026-07-29',
+    priority: 'low',
+    assignee: 'Emma Watson',
+    client: 'Vikram Malhotra',
+    completed: true,
+    category: 'booking',
+  },
+  {
+    id: 'TSK-105',
+    title: 'Dispatch Ananya Sen Catamaran balance payment link',
+    dueDate: '2026-07-31',
+    priority: 'medium',
+    assignee: 'Emma Watson',
+    client: 'Ananya Sen',
+    completed: false,
+    category: 'payment',
+  },
+];
+
 export const TasksView: React.FC = () => {
-  const [tasks, setTasks] = useState<TaskItem[]>([
-    {
-      id: 'TSK-101',
-      title: 'Submit Amit Sharma Schengen Visa application details',
-      dueDate: '2026-07-24', // Today
-      priority: 'high',
-      assignee: 'Sophia Loren',
-      client: 'Amit Sharma',
-      completed: false,
-      category: 'document',
-    },
-    {
-      id: 'TSK-102',
-      title: 'Verify Priya Patel Kyoto Tea Ceremony booking confirmation',
-      dueDate: '2026-07-25', // Tomorrow
-      priority: 'medium',
-      assignee: 'Sophia Loren',
-      client: 'Priya Patel',
-      completed: false,
-      category: 'booking',
-    },
-    {
-      id: 'TSK-103',
-      title: 'Issue Rajesh Iyer outbound flight ticket voucher',
-      dueDate: '2026-07-27',
-      priority: 'high',
-      assignee: 'Liam Neeson',
-      client: 'Rajesh Iyer',
-      completed: false,
-      category: 'booking',
-    },
-    {
-      id: 'TSK-104',
-      title: 'Assign local mountain guide for Vikram Malhotra Alps trek',
-      dueDate: '2026-07-29',
-      priority: 'low',
-      assignee: 'Emma Watson',
-      client: 'Vikram Malhotra',
-      completed: true,
-      category: 'booking',
-    },
-    {
-      id: 'TSK-105',
-      title: 'Dispatch Ananya Sen Catamaran balance payment link',
-      dueDate: '2026-07-31',
-      priority: 'medium',
-      assignee: 'Emma Watson',
-      client: 'Ananya Sen',
-      completed: false,
-      category: 'payment',
-    },
-  ]);
+  const [tasks, setTasks] = useState<TaskItem[]>([]);
+  const [loading, setLoading] = useState(true);
 
   // Form states
   const [isAddOpen, setIsAddOpen] = useState(false);
@@ -89,23 +93,103 @@ export const TasksView: React.FC = () => {
   const [newClient, setNewClient] = useState('');
   const [newCategory, setNewCategory] = useState<TaskItem['category']>('booking');
 
-  const handleToggleComplete = (taskId: string) => {
+  useEffect(() => {
+    const fetchTasks = async () => {
+      setLoading(true);
+      try {
+        const { data, error } = await supabase
+          .from('tasks')
+          .select('*')
+          .order('due_date', { ascending: true });
+
+        if (error) {
+          console.error('Error fetching tasks from Supabase:', error);
+        } else if (data && data.length > 0) {
+          setTasks(data.map(item => ({
+            id: item.id,
+            title: item.title,
+            dueDate: item.due_date,
+            priority: item.priority,
+            assignee: item.assignee,
+            client: item.client,
+            completed: item.completed,
+            category: item.category,
+          })));
+        } else {
+          // If remote db has no records, seed it with the default list
+          const { error: seedError } = await supabase
+            .from('tasks')
+            .insert(
+              initialSeedTasks.map(t => ({
+                id: t.id,
+                title: t.title,
+                due_date: t.dueDate,
+                priority: t.priority,
+                assignee: t.assignee,
+                client: t.client,
+                completed: t.completed,
+                category: t.category,
+              }))
+            );
+          if (!seedError) {
+            setTasks(initialSeedTasks);
+          }
+        }
+      } catch (err) {
+        console.error('Fetch task execution exception:', err);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchTasks();
+  }, []);
+
+  const handleToggleComplete = async (taskId: string) => {
+    const taskToUpdate = tasks.find((t) => t.id === taskId);
+    if (!taskToUpdate) return;
+
+    // Optimistic UI update
     setTasks((prev) =>
       prev.map((t) => (t.id === taskId ? { ...t, completed: !t.completed } : t))
     );
-  };
 
-  const handleDeleteTask = (taskId: string) => {
-    if (confirm('Are you sure you want to delete this task?')) {
-      setTasks((prev) => prev.filter((t) => t.id !== taskId));
+    const { error } = await supabase
+      .from('tasks')
+      .update({ completed: !taskToUpdate.completed })
+      .eq('id', taskId);
+
+    if (error) {
+      console.error('Error toggling task completion in Supabase:', error);
+      // Revert if error
+      setTasks((prev) =>
+        prev.map((t) => (t.id === taskId ? { ...t, completed: taskToUpdate.completed } : t))
+      );
     }
   };
 
-  const handleAddTask = (e: React.FormEvent) => {
+  const handleDeleteTask = async (taskId: string) => {
+    if (confirm('Are you sure you want to delete this task?')) {
+      const originalTasks = [...tasks];
+      setTasks((prev) => prev.filter((t) => t.id !== taskId));
+
+      const { error } = await supabase
+        .from('tasks')
+        .delete()
+        .eq('id', taskId);
+
+      if (error) {
+        console.error('Error deleting task from Supabase:', error);
+        setTasks(originalTasks);
+      }
+    }
+  };
+
+  const handleAddTask = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!newTitle.trim()) return;
 
-    const generatedId = `TSK-${100 + tasks.length + 1}`;
+    const generatedId = `TSK-${100 + Date.now().toString().substring(10)}`;
     const newTask: TaskItem = {
       id: generatedId,
       title: newTitle,
@@ -117,12 +201,35 @@ export const TasksView: React.FC = () => {
       category: newCategory,
     };
 
+    // Optimistic UI updates
     setTasks((prev) => [newTask, ...prev]);
+    setIsAddOpen(false);
     setNewTitle('');
     setNewDueDate('');
     setNewPriority('medium');
     setNewClient('');
-    setIsAddOpen(false);
+
+    const { error } = await supabase
+      .from('tasks')
+      .insert([
+        {
+          id: generatedId,
+          title: newTitle,
+          due_date: newDueDate || new Date().toISOString().substring(0, 10),
+          priority: newPriority,
+          assignee: newAssignee,
+          client: newClient || 'General',
+          completed: false,
+          category: newCategory,
+        },
+      ]);
+
+    if (error) {
+      console.error('Error adding task to Supabase:', error);
+      // Revert
+      setTasks((prev) => prev.filter((t) => t.id !== generatedId));
+      alert('Failed to save task to Supabase: ' + error.message);
+    }
   };
 
   const getPriorityColor = (prio: TaskItem['priority']): 'danger' | 'peach' | 'mint' => {
@@ -154,6 +261,21 @@ export const TasksView: React.FC = () => {
 
   const totalPending = tasks.filter((t) => !t.completed).length;
   const completedCount = tasks.filter((t) => t.completed).length;
+
+  if (loading) {
+    return (
+      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', height: '60vh', flexDirection: 'column', gap: '1rem' }}>
+        <style>{`
+          @keyframes custom-spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+          }
+        `}</style>
+        <div style={{ width: '40px', height: '40px', border: '4px solid var(--border-light)', borderTopColor: 'var(--color-secondary)', borderRadius: '50%', animation: 'custom-spin 1s linear infinite' }} />
+        <span style={{ fontSize: '0.9rem', color: 'var(--text-secondary)' }}>Syncing with Supabase Live Database...</span>
+      </div>
+    );
+  }
 
   return (
     <div style={{ display: 'flex', flexDirection: 'column', gap: '2rem', animation: 'page-enter 0.4s ease-out forwards' }}>

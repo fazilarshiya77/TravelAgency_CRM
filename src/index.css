@@ -1,0 +1,398 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+
+:root {
+  /* Color Palette */
+  --bg-app: #F7FBFC;
+  --bg-card: #FFFFFF;
+  --color-accent: #38BDF8;
+  --color-accent-hover: #0EA5E9;
+  --color-secondary: #0EA5E9;
+  
+  --color-mint: #A7F3D0;
+  --color-mint-dark: #065F46;
+  --color-peach: #FFE8D6;
+  --color-peach-dark: #78350F;
+  --color-sand: #FFF7ED;
+  --color-sand-dark: #9A3412;
+  --color-soft-blue: #EAF8FF;
+  --color-soft-blue-dark: #0369A1;
+
+  --text-primary: #1F2937;
+  --text-secondary: #64748B;
+  --text-tertiary: #94A3B8;
+
+  --color-success: #10B981;
+  --color-warning: #F59E0B;
+  --color-danger: #EF4444;
+
+  /* Borders & Shadows */
+  --border-light: rgba(226, 232, 240, 0.8);
+  --border-focus: rgba(56, 189, 248, 0.4);
+  --shadow-sm: 0 2px 8px rgba(148, 163, 184, 0.05);
+  --shadow-md: 0 8px 30px rgba(148, 163, 184, 0.08);
+  --shadow-lg: 0 16px 40px rgba(148, 163, 184, 0.12);
+  --shadow-hover: 0 20px 48px rgba(56, 189, 248, 0.12);
+
+  /* Layout Properties */
+  --radius-xl: 22px;
+  --radius-lg: 18px;
+  --radius-md: 12px;
+  --radius-sm: 8px;
+
+  --sidebar-width: 260px;
+  --topbar-height: 72px;
+
+  /* Font System */
+  --font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+  
+  /* Transitions */
+  --transition-fast: 0.15s cubic-bezier(0.16, 1, 0.3, 1);
+  --transition-normal: 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  --transition-slow: 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* Reset & Base Elements */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: var(--font-family);
+  background: linear-gradient(135deg, #F0F9FF 0%, #E0F2FE 45%, #E0F7FA 90%, #F0FDFA 100%);
+  color: var(--text-primary);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  overflow-x: hidden;
+  height: 100vh;
+}
+
+#root {
+  height: 100%;
+}
+
+/* Clean Custom Scrollbar (Apple & Notion Inspired) */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(100, 116, 139, 0.15);
+  border-radius: 99px;
+  transition: var(--transition-fast);
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(100, 116, 139, 0.3);
+}
+
+/* Core Layout Shell */
+.app-container {
+  display: flex;
+  height: 100vh;
+  width: 100vw;
+  overflow: hidden;
+  position: relative;
+  background-color: var(--bg-app);
+}
+
+.main-wrapper {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-width: 0;
+  position: relative;
+  z-index: 10;
+}
+
+.content-container {
+  flex: 1;
+  overflow-y: auto;
+  padding: 2.5rem;
+  position: relative;
+}
+
+/* Glassmorphism Accents */
+.glass-effect {
+  background: rgba(255, 255, 255, 0.7);
+  backdrop-filter: blur(12px) saturate(190%);
+  -webkit-backdrop-filter: blur(12px) saturate(190%);
+  border: 1px solid rgba(255, 255, 255, 0.6);
+}
+
+/* Background floating canvas */
+.floating-bg-canvas {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  pointer-events: none;
+  z-index: 1;
+}
+
+/* Custom Floating Animations */
+@keyframes slow-float-1 {
+  0% { transform: translate(0px, 0px) rotate(0deg); }
+  50% { transform: translate(-35px, -70px) rotate(10deg); }
+  100% { transform: translate(0px, 0px) rotate(0deg); }
+}
+
+@keyframes slow-float-2 {
+  0% { transform: translate(0px, 0px) rotate(0deg) scale(1); }
+  50% { transform: translate(50px, 60px) rotate(-12deg) scale(1.1); }
+  100% { transform: translate(0px, 0px) rotate(0deg) scale(1); }
+}
+
+@keyframes slow-float-3 {
+  0% { transform: translate(0px, 0px) rotate(0deg); }
+  50% { transform: translate(-45px, 45px) rotate(15deg); }
+  100% { transform: translate(0px, 0px) rotate(0deg); }
+}
+
+.floating-element {
+  position: absolute;
+  color: var(--color-secondary);
+  filter: blur(0.2px);
+  pointer-events: none;
+  user-select: none;
+  will-change: transform;
+}
+
+.float-anim-1 { animation: slow-float-1 25s ease-in-out infinite; }
+.float-anim-2 { animation: slow-float-2 30s ease-in-out infinite; }
+.float-anim-3 { animation: slow-float-3 28s ease-in-out infinite; }
+
+/* Micro-animations and Page Transitions */
+@keyframes page-enter {
+  from {
+    opacity: 0;
+    transform: translateY(12px) scale(0.995);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+.page-enter-active {
+  animation: page-enter var(--transition-normal) forwards;
+}
+
+@keyframes pulse-soft {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.8; transform: scale(0.98); }
+}
+
+/* Skeleton Loading Glow */
+@keyframes skeleton-glow {
+  0% { background-color: rgba(226, 232, 240, 0.5); }
+  50% { background-color: rgba(226, 232, 240, 0.9); }
+  100% { background-color: rgba(226, 232, 240, 0.5); }
+}
+
+.skeleton-box {
+  animation: skeleton-glow 1.5s ease-in-out infinite;
+  border-radius: var(--radius-sm);
+  display: inline-block;
+  height: 1em;
+  width: 100%;
+}
+
+/* Card and component styling */
+.crm-card {
+  background: rgba(255, 255, 255, 0.45);
+  backdrop-filter: blur(16px) saturate(160%);
+  -webkit-backdrop-filter: blur(16px) saturate(160%);
+  border-radius: var(--radius-lg);
+  border: 1px solid rgba(255, 255, 255, 0.55);
+  box-shadow: 0 8px 32px rgba(148, 163, 184, 0.08);
+  padding: 1.5rem;
+  transition: transform var(--transition-normal), box-shadow var(--transition-normal), border-color var(--transition-normal), background var(--transition-normal);
+}
+
+.crm-card:hover {
+  transform: translateY(-3px);
+  background: rgba(255, 255, 255, 0.55);
+  box-shadow: 0 12px 36px rgba(56, 189, 248, 0.15);
+  border-color: rgba(56, 189, 248, 0.45);
+}
+
+.crm-card-interactive {
+  cursor: pointer;
+}
+
+/* Primary Typography Classes */
+.h1-title {
+  font-size: 2rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  letter-spacing: -0.025em;
+  line-height: 1.2;
+}
+
+.h2-subtitle {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  letter-spacing: -0.015em;
+  line-height: 1.3;
+}
+
+.body-normal {
+  font-size: 0.925rem;
+  font-weight: 400;
+  color: var(--text-secondary);
+  line-height: 1.5;
+}
+
+.text-xs-caption {
+  font-size: 0.775rem;
+  font-weight: 500;
+  color: var(--text-tertiary);
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+}
+
+/* Interactive elements */
+button, input, select, textarea {
+  font-family: inherit;
+}
+
+/* Map Pin Pulse */
+@keyframes map-ping {
+  0% { transform: scale(0.6); opacity: 1; }
+  100% { transform: scale(2.4); opacity: 0; }
+}
+
+.map-ping-pulse {
+  animation: map-ping 2.5s cubic-bezier(0.16, 1, 0.3, 1) infinite;
+}
+
+/* ==========================================
+   Dark Mode Override Layer
+   ========================================== */
+body.dark {
+  --bg-app: #0B0F19; /* Deep space dark blue */
+  --bg-card: #111827; /* Dark gray-blue */
+  --text-primary: #F9FAFB;
+  --text-secondary: #9CA3AF;
+  --text-tertiary: #6B7280;
+  --border-light: rgba(55, 65, 81, 0.5);
+  --shadow-sm: 0 4px 16px rgba(0, 0, 0, 0.4);
+  --shadow-md: 0 12px 36px rgba(0, 0, 0, 0.55);
+  --shadow-lg: 0 20px 48px rgba(0, 0, 0, 0.65);
+}
+
+body.dark {
+  background: linear-gradient(135deg, #020617 0%, #070F22 45%, #0C1938 90%, #020617 100%) !important;
+  color: var(--text-primary) !important;
+}
+
+/* Sidebar and Topbar background override */
+body.dark aside {
+  background: #0C182F !important;
+  border-color: rgba(255, 255, 255, 0.08) !important;
+}
+
+body.dark header {
+  background: rgba(15, 23, 42, 0.25) !important;
+  backdrop-filter: blur(12px) saturate(140%) !important;
+  -webkit-backdrop-filter: blur(12px) saturate(140%) !important;
+  border-color: rgba(255, 255, 255, 0.05) !important;
+}
+
+/* Glass effect override */
+body.dark .glass-effect {
+  background: rgba(15, 23, 42, 0.3) !important;
+  backdrop-filter: blur(14px) saturate(140%) !important;
+  -webkit-backdrop-filter: blur(14px) saturate(140%) !important;
+  border: 1px solid rgba(255, 255, 255, 0.08) !important;
+}
+
+/* Cards (both class and inline white backgrounds) */
+body.dark .crm-card,
+body.dark div[style*="backgroundColor: '#FFFFFF'"],
+body.dark div[style*="backgroundColor: '#fff'"],
+body.dark div[style*="backgroundColor: '#FFF'"],
+body.dark div[style*="background-color: rgb(255, 255, 255)"],
+body.dark div[style*="backgroundColor: '#F8FAFC'"],
+body.dark div[style*="background-color: #FFFFFF"],
+body.dark div[style*="background-color: #ffffff"],
+body.dark div[style*="background: '#FFFFFF'"],
+body.dark div[style*="backgroundColor: '#F1F5F9'"],
+body.dark div[style*="background: '#F8FAFC'"] {
+  background-color: rgba(17, 24, 39, 0.35) !important;
+  backdrop-filter: blur(16px) saturate(140%) !important;
+  -webkit-backdrop-filter: blur(16px) saturate(140%) !important;
+  border-color: rgba(255, 255, 255, 0.08) !important;
+  color: var(--text-primary) !important;
+}
+
+/* Inputs, Selects, and Textareas */
+body.dark input,
+body.dark select,
+body.dark textarea,
+body.dark input[style*="backgroundColor: '#FFFFFF'"],
+body.dark select[style*="backgroundColor: '#FFFFFF'"],
+body.dark textarea[style*="backgroundColor: '#FFFFFF'"] {
+  background-color: #1F2937 !important;
+  color: #F3F4F6 !important;
+  border-color: #374151 !important;
+}
+
+/* Table elements */
+body.dark th {
+  background-color: #1F2937 !important;
+  color: var(--text-secondary) !important;
+}
+
+body.dark td {
+  border-color: var(--border-light) !important;
+}
+
+body.dark tr:hover td {
+  background-color: rgba(31, 41, 55, 0.4) !important;
+}
+
+/* Drawer / Modal override */
+body.dark div[style*="backgroundColor: '#FFFFFF'"][style*="zIndex: 9500"],
+body.dark div[style*="backgroundColor: '#FFFFFF'"][style*="zIndex: 99999"],
+body.dark div[style*="backgroundColor: '#FFFFFF'"][style*="position: 'fixed'"],
+body.dark div[style*="backgroundColor: '#FFFFFF'"][style*="width: '500px'"],
+body.dark div[style*="backgroundColor: '#FFFFFF'"][style*="width: '100%'"] {
+  background-color: var(--bg-card) !important;
+  border-color: var(--border-light) !important;
+}
+
+/* Headings and generic texts styled inline */
+body.dark h1,
+body.dark h2,
+body.dark h3,
+body.dark h4,
+body.dark span[style*="color: 'var(--text-primary)'"],
+body.dark div[style*="color: 'var(--text-primary)'"] {
+  color: var(--text-primary) !important;
+}
+
+body.dark p,
+body.dark span[style*="color: 'var(--text-secondary)'"],
+body.dark div[style*="color: 'var(--text-secondary)'"] {
+  color: var(--text-secondary) !important;
+}
+
+/* Scrollbars */
+body.dark ::-webkit-scrollbar-thumb {
+  background: rgba(243, 244, 246, 0.15) !important;
+}
+
+body.dark ::-webkit-scrollbar-thumb:hover {
+  background: rgba(243, 244, 246, 0.3) !important;
+}

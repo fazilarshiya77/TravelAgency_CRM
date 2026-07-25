@@ -426,38 +426,31 @@ export const PaymentsView: React.FC = () => {
                 </div>
               </div>
 
-              {/* GST breakdown table */}
-              <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: '0.75rem', textAlign: 'left' }}>
-                <thead>
-                  <tr style={{ borderBottom: '1px solid #CBD5E1', color: '#475569', textTransform: 'uppercase', fontSize: '0.65rem' }}>
-                    <th style={{ padding: '6px 0' }}>SAC Code & Description</th>
-                    <th style={{ padding: '6px 0', textAlign: 'right' }}>Taxable Value</th>
-                    <th style={{ padding: '6px 0', textAlign: 'right' }}>CGST (9%)</th>
-                    <th style={{ padding: '6px 0', textAlign: 'right' }}>SGST (9%)</th>
-                    <th style={{ padding: '6px 0', textAlign: 'right' }}>Total (INR)</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr style={{ borderBottom: '1px solid #E2E8F0' }}>
-                    <td style={{ padding: '10px 0' }}>
-                      <strong>SAC 998552</strong><br />
-                      Travel Agency Excursions booking and accommodation services
-                    </td>
-                    <td style={{ padding: '10px 0', textAlign: 'right' }}>
-                      ₹{(selectedPaymentForInvoice.totalCost / 1.18).toFixed(0).replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
-                    </td>
-                    <td style={{ padding: '10px 0', textAlign: 'right' }}>
-                      ₹{((selectedPaymentForInvoice.totalCost / 1.18) * 0.09).toFixed(0).replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
-                    </td>
-                    <td style={{ padding: '10px 0', textAlign: 'right' }}>
-                      ₹{((selectedPaymentForInvoice.totalCost / 1.18) * 0.09).toFixed(0).replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
-                    </td>
-                    <td style={{ padding: '10px 0', textAlign: 'right', fontWeight: 600 }}>
-                      ₹{selectedPaymentForInvoice.totalCost.toLocaleString()}
-                    </td>
-                  </tr>
-                </tbody>
-              </table>
+              {/* Service Description */}
+              <div style={{ marginBottom: '0.5rem' }}>
+                <strong style={{ fontSize: '0.85rem' }}>SAC 998552</strong><br />
+                <span style={{ fontSize: '0.75rem', color: '#475569' }}>Travel Agency Excursions booking and accommodation services</span>
+              </div>
+
+              {/* GST breakdown column format */}
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem', fontSize: '0.8rem', width: '250px', marginLeft: 'auto' }}>
+                <div style={{ display: 'flex', justifyContent: 'space-between', borderBottom: '1px solid #E2E8F0', paddingBottom: '4px' }}>
+                  <span style={{ color: '#475569' }}>Taxable Value</span>
+                  <span>₹{(selectedPaymentForInvoice.totalCost / 1.18).toFixed(0).replace(/\B(?=(\d{3})+(?!\d))/g, ",")}</span>
+                </div>
+                <div style={{ display: 'flex', justifyContent: 'space-between', borderBottom: '1px solid #E2E8F0', paddingBottom: '4px' }}>
+                  <span style={{ color: '#475569' }}>CGST (9%)</span>
+                  <span>₹{((selectedPaymentForInvoice.totalCost / 1.18) * 0.09).toFixed(0).replace(/\B(?=(\d{3})+(?!\d))/g, ",")}</span>
+                </div>
+                <div style={{ display: 'flex', justifyContent: 'space-between', borderBottom: '1px solid #E2E8F0', paddingBottom: '4px' }}>
+                  <span style={{ color: '#475569' }}>SGST (9%)</span>
+                  <span>₹{((selectedPaymentForInvoice.totalCost / 1.18) * 0.09).toFixed(0).replace(/\B(?=(\d{3})+(?!\d))/g, ",")}</span>
+                </div>
+                <div style={{ display: 'flex', justifyContent: 'space-between', fontWeight: 700, fontSize: '0.9rem', paddingTop: '4px' }}>
+                  <span>Total (INR)</span>
+                  <span>₹{selectedPaymentForInvoice.totalCost.toLocaleString()}</span>
+                </div>
+              </div>
 
               {/* Invoicing totals */}
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', borderTop: '1px dashed #CBD5E1', paddingTop: '10px', fontSize: '0.8rem' }}>

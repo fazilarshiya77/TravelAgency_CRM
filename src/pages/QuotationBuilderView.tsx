@@ -108,9 +108,7 @@ export const QuotationBuilderView: React.FC = () => {
   const transferTotal = transfers.reduce((sum, t) => sum + t.price, 0);
   const activityTotal = activities.reduce((sum, a) => sum + a.price, 0);
 
-  const subtotalUSD = hotelTotal + flightTotal + transferTotal + activityTotal + mealsPrice + visaPrice + insurancePrice;
-  const conversionRate = 85; // USD to INR conversion rate
-  const subtotalINR = subtotalUSD * conversionRate;
+  const subtotalINR = hotelTotal + flightTotal + transferTotal + activityTotal + mealsPrice + visaPrice + insurancePrice;
   
   const gstRate = 0.18; // 18% GST (CGST 9% + SGST 9%)
   const cgst = subtotalINR * 0.09;
@@ -200,7 +198,7 @@ export const QuotationBuilderView: React.FC = () => {
                     <span style={{ color: 'var(--text-secondary)', marginLeft: '6px' }}>({h.roomType}) - {h.nights} Nights</span>
                   </div>
                   <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-                    <span style={{ fontSize: '0.8rem', fontWeight: 600 }}>${(h.nights * h.pricePerNight).toLocaleString()}</span>
+                    <span style={{ fontSize: '0.8rem', fontWeight: 600 }}>₹{(h.nights * h.pricePerNight).toLocaleString()}</span>
                     <button style={{ border: 'none', background: 'transparent', cursor: 'pointer', color: 'var(--text-tertiary)' }} onClick={() => setHotels(hotels.filter(item => item.id !== h.id))}>
                       <Trash2 className="w-3.5 h-3.5 hover:text-red-500" />
                     </button>
@@ -229,7 +227,7 @@ export const QuotationBuilderView: React.FC = () => {
                     <span style={{ color: 'var(--text-secondary)', marginLeft: '6px' }}>({f.routing}) - {f.classType}</span>
                   </div>
                   <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-                    <span style={{ fontSize: '0.8rem', fontWeight: 600 }}>${f.price.toLocaleString()}</span>
+                    <span style={{ fontSize: '0.8rem', fontWeight: 600 }}>₹{f.price.toLocaleString()}</span>
                     <button style={{ border: 'none', background: 'transparent', cursor: 'pointer', color: 'var(--text-tertiary)' }} onClick={() => setFlights(flights.filter(item => item.id !== f.id))}>
                       <Trash2 className="w-3.5 h-3.5 hover:text-red-500" />
                     </button>
@@ -258,7 +256,7 @@ export const QuotationBuilderView: React.FC = () => {
                     <span style={{ color: 'var(--text-secondary)', marginLeft: '6px' }}>({t.routing})</span>
                   </div>
                   <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-                    <span style={{ fontSize: '0.8rem', fontWeight: 600 }}>${t.price.toLocaleString()}</span>
+                    <span style={{ fontSize: '0.8rem', fontWeight: 600 }}>₹{t.price.toLocaleString()}</span>
                     <button style={{ border: 'none', background: 'transparent', cursor: 'pointer', color: 'var(--text-tertiary)' }} onClick={() => setTransfers(transfers.filter(item => item.id !== t.id))}>
                       <Trash2 className="w-3.5 h-3.5 hover:text-red-500" />
                     </button>
@@ -283,7 +281,7 @@ export const QuotationBuilderView: React.FC = () => {
                 <div key={a.id} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', backgroundColor: '#F8FAFC', padding: '8px 12px', borderRadius: '8px' }}>
                   <div style={{ fontSize: '0.8rem', fontWeight: 600 }}>{a.name}</div>
                   <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-                    <span style={{ fontSize: '0.8rem', fontWeight: 600 }}>${a.price.toLocaleString()}</span>
+                    <span style={{ fontSize: '0.8rem', fontWeight: 600 }}>₹{a.price.toLocaleString()}</span>
                     <button style={{ border: 'none', background: 'transparent', cursor: 'pointer', color: 'var(--text-tertiary)' }} onClick={() => setActivities(activities.filter(item => item.id !== a.id))}>
                       <Trash2 className="w-3.5 h-3.5 hover:text-red-500" />
                     </button>
@@ -304,15 +302,15 @@ export const QuotationBuilderView: React.FC = () => {
           <Card title="6. Visa, Insurance & Ancillary Fees">
             <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: '1rem', marginTop: '0.5rem' }}>
               <div>
-                <label style={{ fontSize: '0.75rem', fontWeight: 600, color: 'var(--text-secondary)' }}>Meals Packages ($)</label>
+                <label style={{ fontSize: '0.75rem', fontWeight: 600, color: 'var(--text-secondary)' }}>Meals Packages (₹)</label>
                 <Input type="number" value={mealsPrice || ''} onChange={(e) => setMealsPrice(parseFloat(e.target.value) || 0)} />
               </div>
               <div>
-                <label style={{ fontSize: '0.75rem', fontWeight: 600, color: 'var(--text-secondary)' }}>Visa Handling Fees ($)</label>
+                <label style={{ fontSize: '0.75rem', fontWeight: 600, color: 'var(--text-secondary)' }}>Visa Handling Fees (₹)</label>
                 <Input type="number" value={visaPrice || ''} onChange={(e) => setVisaPrice(parseFloat(e.target.value) || 0)} />
               </div>
               <div>
-                <label style={{ fontSize: '0.75rem', fontWeight: 600, color: 'var(--text-secondary)' }}>Travel Insurance ($)</label>
+                <label style={{ fontSize: '0.75rem', fontWeight: 600, color: 'var(--text-secondary)' }}>Travel Insurance (₹)</label>
                 <Input type="number" value={insurancePrice || ''} onChange={(e) => setInsurancePrice(parseFloat(e.target.value) || 0)} />
               </div>
             </div>
@@ -335,43 +333,43 @@ export const QuotationBuilderView: React.FC = () => {
                 {hotels.map(h => (
                   <div key={h.id} style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.75rem' }}>
                     <span style={{ color: 'var(--text-secondary)' }}>Stay: {h.name} x {h.nights}n</span>
-                    <span style={{ fontWeight: 600 }}>${(h.nights * h.pricePerNight).toLocaleString()}</span>
+                    <span style={{ fontWeight: 600 }}>₹{(h.nights * h.pricePerNight).toLocaleString()}</span>
                   </div>
                 ))}
                 {flights.map(f => (
                   <div key={f.id} style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.75rem' }}>
                     <span style={{ color: 'var(--text-secondary)' }}>Flight: {f.airline} ({f.routing})</span>
-                    <span style={{ fontWeight: 600 }}>${f.price.toLocaleString()}</span>
+                    <span style={{ fontWeight: 600 }}>₹{f.price.toLocaleString()}</span>
                   </div>
                 ))}
                 {transfers.map(t => (
                   <div key={t.id} style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.75rem' }}>
                     <span style={{ color: 'var(--text-secondary)' }}>Transfer: {t.type}</span>
-                    <span style={{ fontWeight: 600 }}>${t.price.toLocaleString()}</span>
+                    <span style={{ fontWeight: 600 }}>₹{t.price.toLocaleString()}</span>
                   </div>
                 ))}
                 {activities.map(a => (
                   <div key={a.id} style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.75rem' }}>
                     <span style={{ color: 'var(--text-secondary)' }}>Activity: {a.name}</span>
-                    <span style={{ fontWeight: 600 }}>${a.price.toLocaleString()}</span>
+                    <span style={{ fontWeight: 600 }}>₹{a.price.toLocaleString()}</span>
                   </div>
                 ))}
                 {mealsPrice > 0 && (
                   <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.75rem' }}>
                     <span style={{ color: 'var(--text-secondary)' }}>Meals Inclusion Plan</span>
-                    <span style={{ fontWeight: 600 }}>${mealsPrice}</span>
+                    <span style={{ fontWeight: 600 }}>₹{mealsPrice}</span>
                   </div>
                 )}
                 {visaPrice > 0 && (
                   <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.75rem' }}>
                     <span style={{ color: 'var(--text-secondary)' }}>Schengen Visa Processing Fee</span>
-                    <span style={{ fontWeight: 600 }}>${visaPrice}</span>
+                    <span style={{ fontWeight: 600 }}>₹{visaPrice}</span>
                   </div>
                 )}
                 {insurancePrice > 0 && (
                   <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.75rem' }}>
                     <span style={{ color: 'var(--text-secondary)' }}>Allianz Premium Travel Insurance</span>
-                    <span style={{ fontWeight: 600 }}>${insurancePrice}</span>
+                    <span style={{ fontWeight: 600 }}>₹{insurancePrice}</span>
                   </div>
                 )}
               </div>
@@ -379,11 +377,7 @@ export const QuotationBuilderView: React.FC = () => {
               {/* Invoicing summary details */}
               <div style={{ borderTop: '1px solid var(--border-light)', paddingTop: '10px', display: 'flex', flexDirection: 'column', gap: '6px' }}>
                 <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.775rem' }}>
-                  <span>Subtotal (USD)</span>
-                  <span style={{ fontWeight: 600 }}>${subtotalUSD.toLocaleString()}</span>
-                </div>
-                <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.775rem' }}>
-                  <span>Subtotal (INR) <small style={{ color: 'var(--text-secondary)' }}>@₹{conversionRate}</small></span>
+                  <span>Subtotal (INR)</span>
                   <span style={{ fontWeight: 600 }}>₹{subtotalINR.toLocaleString()}</span>
                 </div>
                 <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.775rem', color: 'var(--color-peach-dark)' }}>
@@ -439,7 +433,7 @@ export const QuotationBuilderView: React.FC = () => {
             <h3 style={{ fontSize: '0.85rem', color: '#64748B', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Excursion Summary</h3>
             <div style={{ marginTop: '0.5rem' }}>
               <span style={{ fontSize: '0.85rem', color: '#475569' }}>Destination: <strong>{destination}</strong></span><br />
-              <span style={{ fontSize: '0.85rem', color: '#475569' }}>Conversion Reference: 1 USD = {conversionRate} INR</span>
+              <span style={{ fontSize: '0.85rem', color: '#475569' }}>Currency: INR (₹)</span>
             </div>
           </div>
         </div>
@@ -449,7 +443,7 @@ export const QuotationBuilderView: React.FC = () => {
           <thead>
             <tr style={{ borderBottom: '2px solid #CBD5E1', color: '#475569', fontSize: '0.8rem', textTransform: 'uppercase' }}>
               <th style={{ padding: '8px 0', fontWeight: 600 }}>Category & Details</th>
-              <th style={{ padding: '8px 0', textAlign: 'right', fontWeight: 600 }}>Price (USD)</th>
+              <th style={{ padding: '8px 0', textAlign: 'right', fontWeight: 600 }}>Price (INR)</th>
               <th style={{ padding: '8px 0', textAlign: 'right', fontWeight: 600 }}>Total (INR)</th>
             </tr>
           </thead>
@@ -460,10 +454,10 @@ export const QuotationBuilderView: React.FC = () => {
               <tr key={i} style={{ borderBottom: '1px solid #E2E8F0', fontSize: '0.85rem' }}>
                 <td style={{ padding: '12px 0' }}>
                   <strong>Stay: {h.name}</strong><br />
-                  <span style={{ fontSize: '0.75rem', color: '#64748B' }}>Room: {h.roomType} | {h.nights} Nights @ ${h.pricePerNight}/night</span>
+                  <span style={{ fontSize: '0.75rem', color: '#64748B' }}>Room: {h.roomType} | {h.nights} Nights @ ₹{h.pricePerNight}/night</span>
                 </td>
-                <td style={{ padding: '12px 0', textAlign: 'right' }}>${(h.nights * h.pricePerNight).toLocaleString()}</td>
-                <td style={{ padding: '12px 0', textAlign: 'right' }}>₹{(h.nights * h.pricePerNight * conversionRate).toLocaleString()}</td>
+                <td style={{ padding: '12px 0', textAlign: 'right' }}>₹{h.pricePerNight.toLocaleString()}</td>
+                <td style={{ padding: '12px 0', textAlign: 'right' }}>₹{(h.nights * h.pricePerNight).toLocaleString()}</td>
               </tr>
             ))}
 
@@ -474,8 +468,8 @@ export const QuotationBuilderView: React.FC = () => {
                   <strong>Flight: {f.airline}</strong><br />
                   <span style={{ fontSize: '0.75rem', color: '#64748B' }}>Route: {f.routing} | Class: {f.classType}</span>
                 </td>
-                <td style={{ padding: '12px 0', textAlign: 'right' }}>${f.price.toLocaleString()}</td>
-                <td style={{ padding: '12px 0', textAlign: 'right' }}>₹{(f.price * conversionRate).toLocaleString()}</td>
+                <td style={{ padding: '12px 0', textAlign: 'right' }}>₹{f.price.toLocaleString()}</td>
+                <td style={{ padding: '12px 0', textAlign: 'right' }}>₹{f.price.toLocaleString()}</td>
               </tr>
             ))}
 
@@ -486,8 +480,8 @@ export const QuotationBuilderView: React.FC = () => {
                   <strong>Transfer: {t.type}</strong><br />
                   <span style={{ fontSize: '0.75rem', color: '#64748B' }}>Route: {t.routing}</span>
                 </td>
-                <td style={{ padding: '12px 0', textAlign: 'right' }}>${t.price.toLocaleString()}</td>
-                <td style={{ padding: '12px 0', textAlign: 'right' }}>₹{(t.price * conversionRate).toLocaleString()}</td>
+                <td style={{ padding: '12px 0', textAlign: 'right' }}>₹{t.price.toLocaleString()}</td>
+                <td style={{ padding: '12px 0', textAlign: 'right' }}>₹{t.price.toLocaleString()}</td>
               </tr>
             ))}
 
@@ -497,8 +491,8 @@ export const QuotationBuilderView: React.FC = () => {
                 <td style={{ padding: '12px 0' }}>
                   <strong>Activity: {a.name}</strong>
                 </td>
-                <td style={{ padding: '12px 0', textAlign: 'right' }}>${a.price.toLocaleString()}</td>
-                <td style={{ padding: '12px 0', textAlign: 'right' }}>₹{(a.price * conversionRate).toLocaleString()}</td>
+                <td style={{ padding: '12px 0', textAlign: 'right' }}>₹{a.price.toLocaleString()}</td>
+                <td style={{ padding: '12px 0', textAlign: 'right' }}>₹{a.price.toLocaleString()}</td>
               </tr>
             ))}
 
@@ -508,8 +502,8 @@ export const QuotationBuilderView: React.FC = () => {
                 <td style={{ padding: '12px 0' }}>
                   <strong>Meals Package Inclusions</strong>
                 </td>
-                <td style={{ padding: '12px 0', textAlign: 'right' }}>${mealsPrice}</td>
-                <td style={{ padding: '12px 0', textAlign: 'right' }}>₹{(mealsPrice * conversionRate).toLocaleString()}</td>
+                <td style={{ padding: '12px 0', textAlign: 'right' }}>₹{mealsPrice}</td>
+                <td style={{ padding: '12px 0', textAlign: 'right' }}>₹{mealsPrice}</td>
               </tr>
             )}
             
@@ -518,8 +512,8 @@ export const QuotationBuilderView: React.FC = () => {
                 <td style={{ padding: '12px 0' }}>
                   <strong>Schengen Visa Processing Fees</strong>
                 </td>
-                <td style={{ padding: '12px 0', textAlign: 'right' }}>${visaPrice}</td>
-                <td style={{ padding: '12px 0', textAlign: 'right' }}>₹{(visaPrice * conversionRate).toLocaleString()}</td>
+                <td style={{ padding: '12px 0', textAlign: 'right' }}>₹{visaPrice}</td>
+                <td style={{ padding: '12px 0', textAlign: 'right' }}>₹{visaPrice}</td>
               </tr>
             )}
 
@@ -528,8 +522,8 @@ export const QuotationBuilderView: React.FC = () => {
                 <td style={{ padding: '12px 0' }}>
                   <strong>Premium Allianz Travel Policy</strong>
                 </td>
-                <td style={{ padding: '12px 0', textAlign: 'right' }}>${insurancePrice}</td>
-                <td style={{ padding: '12px 0', textAlign: 'right' }}>₹{(insurancePrice * conversionRate).toLocaleString()}</td>
+                <td style={{ padding: '12px 0', textAlign: 'right' }}>₹{insurancePrice}</td>
+                <td style={{ padding: '12px 0', textAlign: 'right' }}>₹{insurancePrice}</td>
               </tr>
             )}
 
@@ -539,10 +533,6 @@ export const QuotationBuilderView: React.FC = () => {
         {/* GST Invoice Details summaries */}
         <div style={{ display: 'flex', justifyContent: 'flex-end', marginTop: '2rem' }}>
           <div style={{ width: '320px', display: 'flex', flexDirection: 'column', gap: '8px', fontSize: '0.85rem' }}>
-            <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-              <span>Subtotal (USD):</span>
-              <strong style={{ color: '#1F2937' }}>${subtotalUSD.toLocaleString()}</strong>
-            </div>
             <div style={{ display: 'flex', justifyContent: 'space-between' }}>
               <span>Subtotal (INR):</span>
               <strong style={{ color: '#1F2937' }}>₹{subtotalINR.toLocaleString()}</strong>

@@ -43,6 +43,9 @@ const QuotationBuilderView = lazy(() =>
 const PaymentsView = lazy(() =>
   import('./pages/PaymentsView').then((m) => ({ default: m.PaymentsView }))
 );
+const CarServiceView = lazy(() =>
+  import('./pages/CarServiceView').then((m) => ({ default: m.CarServiceView }))
+);
 
 // High-fidelity skeletal fallback matching our dashboard structure
 const DashboardSkeleton: React.FC = () => (
@@ -97,6 +100,8 @@ const AppContent: React.FC = () => {
         return <QuotationBuilderView />;
       case 'Payments':
         return <PaymentsView />;
+      case 'Car Service':
+        return <CarServiceView />;
       default:
         return <PlaceholderView title={currentTab} />;
     }

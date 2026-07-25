@@ -11,7 +11,8 @@ export type TabName =
   | 'Tasks'
   | 'Messages'
   | 'Quotation Builder'
-  | 'Payments';
+  | 'Payments'
+  | 'Car Service';
 
 export interface NotificationItem {
   id: string;

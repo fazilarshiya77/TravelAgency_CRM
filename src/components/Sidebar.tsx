@@ -13,6 +13,7 @@ import {
   Mail,
   FileText,
   CreditCard,
+  Car,
 } from 'lucide-react';
 
 interface SidebarItem {
@@ -31,6 +32,7 @@ export const Sidebar: React.FC = () => {
     { name: 'Itineraries', icon: <Compass className="w-[18px] h-[18px]" /> },
     { name: 'Quotation Builder', icon: <FileText className="w-[18px] h-[18px]" /> },
     { name: 'Payments', icon: <CreditCard className="w-[18px] h-[18px]" /> },
+    { name: 'Car Service', icon: <Car className="w-[18px] h-[18px]" /> },
     { name: 'Calendar', icon: <Calendar className="w-[18px] h-[18px]" /> },
     { name: 'Reports', icon: <BarChart3 className="w-[18px] h-[18px]" /> },
     { name: 'Tasks', icon: <CheckSquare className="w-[18px] h-[18px]" /> },

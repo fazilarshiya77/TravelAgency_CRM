@@ -33,7 +33,7 @@ const initialSeedTasks: TaskItem[] = [
     title: 'Submit Amit Sharma Schengen Visa application details',
     dueDate: '2026-07-24', // Today
     priority: 'high',
-    assignee: 'Sophia Loren',
+    assignee: 'Rayyan Zainullabidin',
     client: 'Amit Sharma',
     completed: false,
     category: 'document',
@@ -43,7 +43,7 @@ const initialSeedTasks: TaskItem[] = [
     title: 'Verify Priya Patel Kyoto Tea Ceremony booking confirmation',
     dueDate: '2026-07-25', // Tomorrow
     priority: 'medium',
-    assignee: 'Sophia Loren',
+    assignee: 'Rayyan Zainullabidin',
     client: 'Priya Patel',
     completed: false,
     category: 'booking',
@@ -53,7 +53,7 @@ const initialSeedTasks: TaskItem[] = [
     title: 'Issue Rajesh Iyer outbound flight ticket voucher',
     dueDate: '2026-07-27',
     priority: 'high',
-    assignee: 'Liam Neeson',
+    assignee: 'Bhumika',
     client: 'Rajesh Iyer',
     completed: false,
     category: 'booking',
@@ -63,7 +63,7 @@ const initialSeedTasks: TaskItem[] = [
     title: 'Assign local mountain guide for Vikram Malhotra Alps trek',
     dueDate: '2026-07-29',
     priority: 'low',
-    assignee: 'Emma Watson',
+    assignee: 'Santosh',
     client: 'Vikram Malhotra',
     completed: true,
     category: 'booking',
@@ -73,7 +73,7 @@ const initialSeedTasks: TaskItem[] = [
     title: 'Dispatch Ananya Sen Catamaran balance payment link',
     dueDate: '2026-07-31',
     priority: 'medium',
-    assignee: 'Emma Watson',
+    assignee: 'Touhid ahmed',
     client: 'Ananya Sen',
     completed: false,
     category: 'payment',
@@ -89,7 +89,7 @@ export const TasksView: React.FC = () => {
   const [newTitle, setNewTitle] = useState('');
   const [newDueDate, setNewDueDate] = useState('');
   const [newPriority, setNewPriority] = useState<'high' | 'medium' | 'low'>('medium');
-  const [newAssignee, setNewAssignee] = useState('Sophia Loren');
+  const [newAssignee, setNewAssignee] = useState('Rayyan Zainullabidin');
   const [newClient, setNewClient] = useState('');
   const [newCategory, setNewCategory] = useState<TaskItem['category']>('booking');
 
@@ -447,10 +447,10 @@ export const TasksView: React.FC = () => {
                     value={newAssignee}
                     onChange={(e) => setNewAssignee(e.target.value)}
                     options={[
-                      { value: 'Sophia Loren', label: 'Sophia Loren' },
-                      { value: 'Liam Neeson', label: 'Liam Neeson' },
-                      { value: 'Emma Watson', label: 'Emma Watson' },
-                      { value: 'Fazil Arshiya', label: 'Fazil Arshiya' },
+                      { value: 'Rayyan Zainullabidin', label: 'Rayyan Zainullabidin' },
+                      { value: 'Bhumika', label: 'Bhumika' },
+                      { value: 'Santosh', label: 'Santosh' },
+                      { value: 'Touhid ahmed', label: 'Touhid ahmed' },
                     ]}
                   />
                 </div>

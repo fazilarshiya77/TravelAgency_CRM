@@ -14,6 +14,7 @@ import {
   FileText,
   CreditCard,
   Car,
+  LogOut,
 } from 'lucide-react';
 
 interface SidebarItem {
@@ -22,7 +23,7 @@ interface SidebarItem {
 }
 
 export const Sidebar: React.FC = () => {
-  const { currentTab, setCurrentTab } = useNavigation();
+  const { currentTab, setCurrentTab, setIsAuthenticated } = useNavigation();
 
   const menuItems: SidebarItem[] = [
     { name: 'Dashboard', icon: <LayoutDashboard className="w-[18px] h-[18px]" /> },
@@ -221,6 +222,26 @@ export const Sidebar: React.FC = () => {
             CEO
           </div>
         </div>
+        <button 
+          onClick={() => setIsAuthenticated(false)}
+          title="Sign Out"
+          style={{
+            background: 'transparent',
+            border: 'none',
+            color: '#94A3B8',
+            cursor: 'pointer',
+            padding: '0.25rem',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            borderRadius: '4px',
+            transition: 'color var(--transition-fast)'
+          }}
+          onMouseEnter={(e) => e.currentTarget.style.color = '#EF4444'}
+          onMouseLeave={(e) => e.currentTarget.style.color = '#94A3B8'}
+        >
+          <LogOut size={16} />
+        </button>
       </div>
     </aside>
   );

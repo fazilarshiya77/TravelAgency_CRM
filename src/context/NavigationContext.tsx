@@ -24,6 +24,8 @@ export interface NotificationItem {
 }
 
 interface NavigationContextType {
+  isAuthenticated: boolean;
+  setIsAuthenticated: (auth: boolean) => void;
   currentTab: TabName;
   setCurrentTab: (tab: TabName) => void;
   commandPaletteOpen: boolean;
@@ -44,6 +46,7 @@ interface NavigationContextType {
 const NavigationContext = createContext<NavigationContextType | undefined>(undefined);
 
 export const NavigationProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
+  const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
   const [currentTab, setCurrentTabState] = useState<TabName>('Dashboard');
   const [commandPaletteOpen, setCommandPaletteOpen] = useState(false);
   const [aiAssistantOpen, setAiAssistantOpen] = useState(false);
@@ -94,6 +97,8 @@ export const NavigationProvider: React.FC<{ children: ReactNode }> = ({ children
   return (
     <NavigationContext.Provider
       value={{
+        isAuthenticated,
+        setIsAuthenticated,
         currentTab,
         setCurrentTab,
         commandPaletteOpen,

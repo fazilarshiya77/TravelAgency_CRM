@@ -5,6 +5,7 @@ import { Sidebar } from './components/Sidebar';
 import { Topbar } from './components/Topbar';
 import { CommandPalette } from './components/CommandPalette';
 import { AIAssistantDrawer } from './components/AIAssistantDrawer';
+import { StaffLoginView } from './pages/StaffLoginView';
 
 // Lazy load views to optimize bundle sizes and speed up dashboard paints
 const DashboardView = lazy(() =>
@@ -67,7 +68,11 @@ const DashboardSkeleton: React.FC = () => (
 );
 
 const AppContent: React.FC = () => {
-  const { currentTab } = useNavigation();
+  const { currentTab, isAuthenticated } = useNavigation();
+
+  if (!isAuthenticated) {
+    return <StaffLoginView />;
+  }
 
   // Dynamic route navigator mapping tab switches to lazy chunks
   const renderActiveView = () => {

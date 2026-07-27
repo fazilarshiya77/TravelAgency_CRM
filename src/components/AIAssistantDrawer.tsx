@@ -202,7 +202,7 @@ export const AIAssistantDrawer: React.FC = () => {
       <div 
         style={{
           flex: 1,
-          overflowY: 'auto',
+          overflowY: 'scroll',
           padding: '1.5rem',
           display: 'flex',
           flexDirection: 'column',
@@ -374,20 +374,31 @@ export const AIAssistantDrawer: React.FC = () => {
           alignItems: 'center',
         }}
       >
-        <input
-          type="text"
+        <textarea
           placeholder="Ask CRM AI Copilot..."
           value={input}
           onChange={(e) => setInput(e.target.value)}
+          onKeyDown={(e) => {
+            if (e.key === 'Enter' && !e.shiftKey) {
+              e.preventDefault();
+              handleSend(input);
+            }
+          }}
           style={{
             flex: 1,
-            padding: '0.75rem 1rem',
+            padding: '0.85rem 1rem',
             borderRadius: 'var(--radius-md)',
             border: '1px solid var(--border-light)',
-            fontSize: '0.875rem',
+            fontSize: '0.85rem',
             outline: 'none',
             color: 'var(--text-primary)',
             transition: 'border-color var(--transition-fast)',
+            resize: 'none',
+            fontFamily: 'inherit',
+            minHeight: '60px',
+            maxHeight: '150px',
+            overflowY: 'auto',
+            lineHeight: '1.4'
           }}
           onFocus={(e) => e.currentTarget.style.borderColor = 'var(--color-accent)'}
           onBlur={(e) => e.currentTarget.style.borderColor = 'var(--border-light)'}

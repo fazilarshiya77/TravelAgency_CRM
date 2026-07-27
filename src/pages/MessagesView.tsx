@@ -145,7 +145,7 @@ export const MessagesView: React.FC = () => {
       <div style={{ display: 'grid', gridTemplateColumns: '320px 1fr', gap: '1.5rem', flex: 1, minHeight: 0, alignItems: 'stretch' }}>
         
         {/* Inbox Sidebar */}
-        <Card style={{ display: 'flex', flexDirection: 'column', padding: 0, overflow: 'hidden', height: '100%' }}>
+        <div style={{ display: 'flex', flexDirection: 'column', overflow: 'hidden', height: '100%', backgroundColor: 'var(--bg-card)', border: '1px solid var(--border-light)', borderRadius: 'var(--radius-lg)', boxShadow: 'var(--shadow-sm)' }}>
           <div style={{ padding: '1rem', borderBottom: '1px solid var(--border-light)', display: 'flex', alignItems: 'center', gap: '8px' }}>
             <div style={{ display: 'flex', alignItems: 'center', gap: '6px', flex: 1, backgroundColor: 'rgba(255,255,255,0.4)', border: '1px solid var(--border-light)', borderRadius: 'var(--radius-sm)', padding: '4px 8px' }}>
               <Search className="w-3.5 h-3.5 text-slate-400" />
@@ -194,10 +194,10 @@ export const MessagesView: React.FC = () => {
               );
             })}
           </div>
-        </Card>
+        </div>
 
         {/* Conversation Pane */}
-        <Card style={{ display: 'flex', flexDirection: 'column', padding: 0, overflow: 'hidden', height: '100%' }}>
+        <div style={{ display: 'flex', flexDirection: 'column', overflow: 'hidden', height: '100%', backgroundColor: 'var(--bg-card)', border: '1px solid var(--border-light)', borderRadius: 'var(--radius-lg)', boxShadow: 'var(--shadow-sm)' }}>
           {activeThread ? (
             <>
               {/* Active Header */}
@@ -223,7 +223,7 @@ export const MessagesView: React.FC = () => {
               </div>
 
               {/* Messages list */}
-              <div style={{ flex: 1, overflowY: 'auto', padding: '1.5rem', display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+              <div style={{ flex: 1, overflowY: 'scroll', padding: '1.5rem', display: 'flex', flexDirection: 'column', gap: '1rem' }}>
                 {activeThread.conversation.map((c, idx) => {
                   const isAgent = c.sender === 'agent';
                   return (
@@ -261,19 +261,30 @@ export const MessagesView: React.FC = () => {
 
               {/* Typing box */}
               <div style={{ padding: '1rem 1.5rem', borderTop: '1px solid var(--border-light)', backgroundColor: 'rgba(255,255,255,0.15)', display: 'flex', gap: '10px', alignItems: 'center' }}>
-                <input
+                <textarea
                   value={inputText}
                   onChange={(e) => setInputText(e.target.value)}
-                  onKeyDown={(e) => e.key === 'Enter' && handleSendMessage()}
+                  onKeyDown={(e) => {
+                    if (e.key === 'Enter' && !e.shiftKey) {
+                      e.preventDefault();
+                      handleSendMessage();
+                    }
+                  }}
                   placeholder={`Send message to ${activeThread.sender}...`}
                   style={{
                     flex: 1,
-                    padding: '0.75rem 1rem',
+                    padding: '0.85rem 1rem',
                     borderRadius: 'var(--radius-md)',
                     border: '1px solid var(--border-light)',
                     backgroundColor: 'rgba(255, 255, 255, 0.5)',
-                    fontSize: '0.8rem',
-                    outline: 'none'
+                    fontSize: '0.85rem',
+                    outline: 'none',
+                    resize: 'none',
+                    fontFamily: 'inherit',
+                    minHeight: '60px',
+                    maxHeight: '150px',
+                    overflowY: 'auto',
+                    lineHeight: '1.4'
                   }}
                 />
                 <Button
@@ -294,7 +305,7 @@ export const MessagesView: React.FC = () => {
               </div>
             </div>
           )}
-        </Card>
+        </div>
       </div>
     </div>
   );

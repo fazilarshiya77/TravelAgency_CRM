@@ -115,7 +115,7 @@ export const CarServiceView: React.FC = () => {
               transition: 'all var(--transition-fast)'
             }}
           >
-            Available Cars
+            Fleet Inventory
           </button>
           <button
             onClick={() => setActiveTab('rented')}
@@ -163,25 +163,16 @@ export const CarServiceView: React.FC = () => {
                 </tr>
               </thead>
               <tbody>
-                {availableCars.map(car => (
+                {mockCars.filter(c => c.status !== 'rented').map(car => (
                   <tr key={car.id} style={{ borderBottom: '1px solid var(--border-light)' }}>
                     <td style={{ padding: '1rem', fontWeight: 600 }}>{car.model}</td>
                     <td style={{ padding: '1rem', color: 'var(--text-secondary)' }}>{car.type}</td>
                     <td style={{ padding: '1rem' }}>₹{car.costPerDay}</td>
                     <td style={{ padding: '1rem' }}>₹{car.costPerKm}</td>
                     <td style={{ padding: '1rem' }}>
-                      <Tag type="success">Available</Tag>
-                    </td>
-                  </tr>
-                ))}
-                {mockCars.filter(c => c.status === 'maintenance').map(car => (
-                  <tr key={car.id} style={{ borderBottom: '1px solid var(--border-light)' }}>
-                    <td style={{ padding: '1rem', fontWeight: 600 }}>{car.model}</td>
-                    <td style={{ padding: '1rem', color: 'var(--text-secondary)' }}>{car.type}</td>
-                    <td style={{ padding: '1rem' }}>₹{car.costPerDay}</td>
-                    <td style={{ padding: '1rem' }}>₹{car.costPerKm}</td>
-                    <td style={{ padding: '1rem' }}>
-                      <Tag type="warning">Maintenance</Tag>
+                      <Tag colorway={car.status === 'available' ? 'success' : 'warning'}>
+                        {car.status.charAt(0).toUpperCase() + car.status.slice(1)}
+                      </Tag>
                     </td>
                   </tr>
                 ))}
@@ -216,7 +207,7 @@ export const CarServiceView: React.FC = () => {
                     <td style={{ padding: '1rem' }}>{rental.startDate}</td>
                     <td style={{ padding: '1rem' }}>{rental.endDate}</td>
                     <td style={{ padding: '1rem' }}>
-                      <Tag type="warning">Active</Tag>
+                      <Tag colorway="warning">Active</Tag>
                     </td>
                   </tr>
                 ))}

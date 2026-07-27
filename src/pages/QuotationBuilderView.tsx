@@ -6,6 +6,12 @@ import {
   Plus,
   Trash2,
   Printer,
+  User,
+  Hotel,
+  Plane,
+  Car,
+  Map,
+  CreditCard
 } from 'lucide-react';
 
 interface HotelItem {
@@ -38,6 +44,9 @@ interface ActivityItem {
 }
 
 export const QuotationBuilderView: React.FC = () => {
+  // Navigation
+  const [activeTab, setActiveTab] = useState('client');
+
   // Client info
   const [clientName, setClientName] = useState('Neha Sharma');
   const [clientEmail, setClientEmail] = useState('neha@sharma.com');
@@ -164,158 +173,215 @@ export const QuotationBuilderView: React.FC = () => {
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-[1.5rem] items-start no-print" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1.5rem' }}>
         
         {/* Quotation Editor Panel */}
-        <div style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
+        <div style={{ display: 'flex', flexDirection: 'column' }}>
           
-          {/* Client Details Card */}
-          <Card title="1. Client & Excursion General Settings">
-            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem', marginTop: '0.5rem' }}>
-              <div>
-                <label style={{ fontSize: '0.75rem', fontWeight: 600, color: 'var(--text-secondary)' }}>Client Name</label>
-                <Input value={clientName} onChange={(e) => setClientName(e.target.value)} />
-              </div>
-              <div>
-                <label style={{ fontSize: '0.75rem', fontWeight: 600, color: 'var(--text-secondary)' }}>Email</label>
-                <Input value={clientEmail} onChange={(e) => setClientEmail(e.target.value)} />
-              </div>
-              <div>
-                <label style={{ fontSize: '0.75rem', fontWeight: 600, color: 'var(--text-secondary)' }}>Destination Package</label>
-                <Input value={destination} onChange={(e) => setDestination(e.target.value)} />
-              </div>
-              <div>
-                <label style={{ fontSize: '0.75rem', fontWeight: 600, color: 'var(--text-secondary)' }}>Date</label>
-                <Input type="date" value={quoteDate} onChange={(e) => setQuoteDate(e.target.value)} />
-              </div>
-            </div>
-          </Card>
+          {/* Tab Navigation */}
+          <div style={{ display: 'flex', gap: '0.5rem', marginBottom: '1.5rem', overflowX: 'auto', paddingBottom: '4px' }}>
+            {[
+              { id: 'client', label: 'Client Info', icon: <User className="w-4 h-4" /> },
+              { id: 'stays', label: 'Stays', icon: <Hotel className="w-4 h-4" /> },
+              { id: 'flights', label: 'Flights', icon: <Plane className="w-4 h-4" /> },
+              { id: 'commute', label: 'Commute', icon: <Car className="w-4 h-4" /> },
+              { id: 'activities', label: 'Activities', icon: <Map className="w-4 h-4" /> },
+              { id: 'fees', label: 'Fees', icon: <CreditCard className="w-4 h-4" /> },
+            ].map((tab) => (
+              <button
+                key={tab.id}
+                onClick={() => setActiveTab(tab.id)}
+                style={{
+                  display: 'flex', alignItems: 'center', gap: '0.5rem',
+                  padding: '0.6rem 1.2rem',
+                  borderRadius: 'var(--radius-md)',
+                  border: '1px solid',
+                  borderColor: activeTab === tab.id ? 'var(--color-secondary)' : 'var(--border-light)',
+                  backgroundColor: activeTab === tab.id ? 'var(--color-secondary)' : 'var(--bg-card)',
+                  color: activeTab === tab.id ? '#FFF' : 'var(--text-secondary)',
+                  fontWeight: activeTab === tab.id ? 600 : 500,
+                  cursor: 'pointer',
+                  transition: 'all 0.2s',
+                  whiteSpace: 'nowrap',
+                  boxShadow: activeTab === tab.id ? 'var(--shadow-sm)' : 'none'
+                }}
+              >
+                {tab.icon}
+                {tab.label}
+              </button>
+            ))}
+          </div>
 
-          {/* Stays & Hotels Card */}
-          <Card title="2. Hotels Booking Slots">
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem', marginTop: '0.5rem' }}>
-              {hotels.map((h) => (
-                <div key={h.id} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', backgroundColor: '#F8FAFC', padding: '8px 12px', borderRadius: '8px' }}>
-                  <div style={{ fontSize: '0.8rem' }}>
-                    <span style={{ fontWeight: 600 }}>{h.name}</span>
-                    <span style={{ color: 'var(--text-secondary)', marginLeft: '6px' }}>({h.roomType}) - {h.nights} Nights</span>
+          <div style={{ minHeight: '400px' }}>
+            {activeTab === 'client' && (
+              <Card title="Client & Excursion Settings">
+                <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1.25rem', marginTop: '1rem' }}>
+                  <div style={{ display: 'flex', flexDirection: 'column', gap: '0.25rem' }}>
+                    <label style={{ fontSize: '0.85rem', fontWeight: 600, color: 'var(--text-primary)' }}>Client Name</label>
+                    <Input value={clientName} onChange={(e) => setClientName(e.target.value)} />
                   </div>
-                  <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-                    <span style={{ fontSize: '0.8rem', fontWeight: 600 }}>₹{(h.nights * h.pricePerNight).toLocaleString()}</span>
-                    <button style={{ border: 'none', background: 'transparent', cursor: 'pointer', color: 'var(--text-tertiary)' }} onClick={() => setHotels(hotels.filter(item => item.id !== h.id))}>
-                      <Trash2 className="w-3.5 h-3.5 hover:text-red-500" />
-                    </button>
+                  <div style={{ display: 'flex', flexDirection: 'column', gap: '0.25rem' }}>
+                    <label style={{ fontSize: '0.85rem', fontWeight: 600, color: 'var(--text-primary)' }}>Email Address</label>
+                    <Input value={clientEmail} onChange={(e) => setClientEmail(e.target.value)} />
+                  </div>
+                  <div style={{ display: 'flex', flexDirection: 'column', gap: '0.25rem' }}>
+                    <label style={{ fontSize: '0.85rem', fontWeight: 600, color: 'var(--text-primary)' }}>Destination Package</label>
+                    <Input value={destination} onChange={(e) => setDestination(e.target.value)} />
+                  </div>
+                  <div style={{ display: 'flex', flexDirection: 'column', gap: '0.25rem' }}>
+                    <label style={{ fontSize: '0.85rem', fontWeight: 600, color: 'var(--text-primary)' }}>Quotation Date</label>
+                    <Input type="date" value={quoteDate} onChange={(e) => setQuoteDate(e.target.value)} />
                   </div>
                 </div>
-              ))}
-              <form onSubmit={handleAddHotel} style={{ display: 'grid', gridTemplateColumns: '2fr 1fr 1fr 1fr', gap: '8px', alignItems: 'end', borderTop: '1px solid var(--border-light)', paddingTop: '10px' }}>
-                <Input style={{ marginBottom: 0 }} placeholder="Hotel Name" value={newHotel.name} onChange={(e) => setNewHotel({ ...newHotel, name: e.target.value })} required />
-                <Input style={{ marginBottom: 0 }} placeholder="Room Type" value={newHotel.roomType} onChange={(e) => setNewHotel({ ...newHotel, roomType: e.target.value })} />
-                <Input style={{ marginBottom: 0 }} type="number" placeholder="Nights" value={newHotel.nights || ''} onChange={(e) => setNewHotel({ ...newHotel, nights: parseInt(e.target.value) || 0 })} required />
-                <div style={{ display: 'flex', gap: '4px', alignItems: 'center' }}>
-                  <Input style={{ marginBottom: 0, flex: 1 }} type="number" placeholder="Price/Night" value={newHotel.pricePerNight || ''} onChange={(e) => setNewHotel({ ...newHotel, pricePerNight: parseFloat(e.target.value) || 0 })} required />
-                  <Button type="submit" variant="secondary" style={{ padding: '6px' }}><Plus className="w-4 h-4" /></Button>
-                </div>
-              </form>
-            </div>
-          </Card>
+              </Card>
+            )}
 
-          {/* Flights Card */}
-          <Card title="3. Flight Logistics">
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem', marginTop: '0.5rem' }}>
-              {flights.map((f) => (
-                <div key={f.id} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', backgroundColor: '#F8FAFC', padding: '8px 12px', borderRadius: '8px' }}>
-                  <div style={{ fontSize: '0.8rem' }}>
-                    <span style={{ fontWeight: 600 }}>{f.airline}</span>
-                    <span style={{ color: 'var(--text-secondary)', marginLeft: '6px' }}>({f.routing}) - {f.classType}</span>
-                  </div>
-                  <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-                    <span style={{ fontSize: '0.8rem', fontWeight: 600 }}>₹{f.price.toLocaleString()}</span>
-                    <button style={{ border: 'none', background: 'transparent', cursor: 'pointer', color: 'var(--text-tertiary)' }} onClick={() => setFlights(flights.filter(item => item.id !== f.id))}>
-                      <Trash2 className="w-3.5 h-3.5 hover:text-red-500" />
-                    </button>
+            {activeTab === 'stays' && (
+              <Card title="Hotels & Accommodations">
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem', marginTop: '1rem' }}>
+                  {hotels.map((h) => (
+                    <div key={h.id} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', backgroundColor: 'var(--bg-app)', padding: '12px 16px', borderRadius: 'var(--radius-md)', border: '1px solid var(--border-light)' }}>
+                      <div>
+                        <div style={{ fontSize: '0.9rem', fontWeight: 600, color: 'var(--text-primary)' }}>{h.name}</div>
+                        <div style={{ fontSize: '0.8rem', color: 'var(--text-secondary)', marginTop: '2px' }}>{h.roomType} • {h.nights} Nights</div>
+                      </div>
+                      <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
+                        <span style={{ fontSize: '0.95rem', fontWeight: 700, color: 'var(--text-primary)' }}>₹{(h.nights * h.pricePerNight).toLocaleString()}</span>
+                        <button style={{ border: 'none', background: 'transparent', cursor: 'pointer', color: 'var(--text-tertiary)' }} onClick={() => setHotels(hotels.filter(item => item.id !== h.id))}>
+                          <Trash2 className="w-4 h-4 hover:text-red-500 transition-colors" />
+                        </button>
+                      </div>
+                    </div>
+                  ))}
+                  
+                  <div style={{ marginTop: '0.5rem', padding: '16px', backgroundColor: 'var(--bg-app)', borderRadius: 'var(--radius-md)', border: '1px dashed var(--border-focus)' }}>
+                    <div style={{ fontSize: '0.85rem', fontWeight: 600, marginBottom: '12px', color: 'var(--color-secondary)' }}>Add New Hotel</div>
+                    <form onSubmit={handleAddHotel} style={{ display: 'grid', gridTemplateColumns: '2fr 1.5fr 1fr 1fr', gap: '12px', alignItems: 'end' }}>
+                      <Input style={{ marginBottom: 0 }} placeholder="Hotel Name" value={newHotel.name} onChange={(e) => setNewHotel({ ...newHotel, name: e.target.value })} required />
+                      <Input style={{ marginBottom: 0 }} placeholder="Room Type" value={newHotel.roomType} onChange={(e) => setNewHotel({ ...newHotel, roomType: e.target.value })} />
+                      <Input style={{ marginBottom: 0 }} type="number" placeholder="Nights" value={newHotel.nights || ''} onChange={(e) => setNewHotel({ ...newHotel, nights: parseInt(e.target.value) || 0 })} required />
+                      <div style={{ display: 'flex', gap: '8px', alignItems: 'center' }}>
+                        <Input style={{ marginBottom: 0, flex: 1 }} type="number" placeholder="Price/Night" value={newHotel.pricePerNight || ''} onChange={(e) => setNewHotel({ ...newHotel, pricePerNight: parseFloat(e.target.value) || 0 })} required />
+                        <Button type="submit" variant="secondary" style={{ padding: '10px' }}><Plus className="w-4 h-4" /></Button>
+                      </div>
+                    </form>
                   </div>
                 </div>
-              ))}
-              <form onSubmit={handleAddFlight} style={{ display: 'grid', gridTemplateColumns: '1fr 2fr 1fr 1fr', gap: '8px', alignItems: 'end', borderTop: '1px solid var(--border-light)', paddingTop: '10px' }}>
-                <Input style={{ marginBottom: 0 }} placeholder="Airline" value={newFlight.airline} onChange={(e) => setNewFlight({ ...newFlight, airline: e.target.value })} required />
-                <Input style={{ marginBottom: 0 }} placeholder="Routing (e.g. JFK-FCO)" value={newFlight.routing} onChange={(e) => setNewFlight({ ...newFlight, routing: e.target.value })} required />
-                <Input style={{ marginBottom: 0 }} placeholder="Class" value={newFlight.classType} onChange={(e) => setNewFlight({ ...newFlight, classType: e.target.value })} />
-                <div style={{ display: 'flex', gap: '4px', alignItems: 'center' }}>
-                  <Input style={{ marginBottom: 0, flex: 1 }} type="number" placeholder="Price" value={newFlight.price || ''} onChange={(e) => setNewFlight({ ...newFlight, price: parseFloat(e.target.value) || 0 })} required />
-                  <Button type="submit" variant="secondary" style={{ padding: '6px' }}><Plus className="w-4 h-4" /></Button>
-                </div>
-              </form>
-            </div>
-          </Card>
+              </Card>
+            )}
 
-          {/* Transfers Card */}
-          <Card title="4. Transfers & Ground Commute">
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem', marginTop: '0.5rem' }}>
-              {transfers.map((t) => (
-                <div key={t.id} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', backgroundColor: '#F8FAFC', padding: '8px 12px', borderRadius: '8px' }}>
-                  <div style={{ fontSize: '0.8rem' }}>
-                    <span style={{ fontWeight: 600 }}>{t.type}</span>
-                    <span style={{ color: 'var(--text-secondary)', marginLeft: '6px' }}>({t.routing})</span>
-                  </div>
-                  <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-                    <span style={{ fontSize: '0.8rem', fontWeight: 600 }}>₹{t.price.toLocaleString()}</span>
-                    <button style={{ border: 'none', background: 'transparent', cursor: 'pointer', color: 'var(--text-tertiary)' }} onClick={() => setTransfers(transfers.filter(item => item.id !== t.id))}>
-                      <Trash2 className="w-3.5 h-3.5 hover:text-red-500" />
-                    </button>
-                  </div>
-                </div>
-              ))}
-              <form onSubmit={handleAddTransfer} style={{ display: 'grid', gridTemplateColumns: '1fr 2fr 1fr', gap: '8px', alignItems: 'end', borderTop: '1px solid var(--border-light)', paddingTop: '10px' }}>
-                <Input style={{ marginBottom: 0 }} placeholder="Type" value={newTransfer.type} onChange={(e) => setNewTransfer({ ...newTransfer, type: e.target.value })} required />
-                <Input style={{ marginBottom: 0 }} placeholder="Routing" value={newTransfer.routing} onChange={(e) => setNewTransfer({ ...newTransfer, routing: e.target.value })} required />
-                <div style={{ display: 'flex', gap: '4px', alignItems: 'center' }}>
-                  <Input style={{ marginBottom: 0, flex: 1 }} type="number" placeholder="Price" value={newTransfer.price || ''} onChange={(e) => setNewTransfer({ ...newTransfer, price: parseFloat(e.target.value) || 0 })} required />
-                  <Button type="submit" variant="secondary" style={{ padding: '6px' }}><Plus className="w-4 h-4" /></Button>
-                </div>
-              </form>
-            </div>
-          </Card>
-
-          {/* Activities Card */}
-          <Card title="5. Sightseeing & Activities">
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem', marginTop: '0.5rem' }}>
-              {activities.map((a) => (
-                <div key={a.id} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', backgroundColor: '#F8FAFC', padding: '8px 12px', borderRadius: '8px' }}>
-                  <div style={{ fontSize: '0.8rem', fontWeight: 600 }}>{a.name}</div>
-                  <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-                    <span style={{ fontSize: '0.8rem', fontWeight: 600 }}>₹{a.price.toLocaleString()}</span>
-                    <button style={{ border: 'none', background: 'transparent', cursor: 'pointer', color: 'var(--text-tertiary)' }} onClick={() => setActivities(activities.filter(item => item.id !== a.id))}>
-                      <Trash2 className="w-3.5 h-3.5 hover:text-red-500" />
-                    </button>
+            {activeTab === 'flights' && (
+              <Card title="Flight Logistics">
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem', marginTop: '1rem' }}>
+                  {flights.map((f) => (
+                    <div key={f.id} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', backgroundColor: 'var(--bg-app)', padding: '12px 16px', borderRadius: 'var(--radius-md)', border: '1px solid var(--border-light)' }}>
+                      <div>
+                        <div style={{ fontSize: '0.9rem', fontWeight: 600, color: 'var(--text-primary)' }}>{f.airline}</div>
+                        <div style={{ fontSize: '0.8rem', color: 'var(--text-secondary)', marginTop: '2px' }}>{f.routing} • {f.classType}</div>
+                      </div>
+                      <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
+                        <span style={{ fontSize: '0.95rem', fontWeight: 700, color: 'var(--text-primary)' }}>₹{f.price.toLocaleString()}</span>
+                        <button style={{ border: 'none', background: 'transparent', cursor: 'pointer', color: 'var(--text-tertiary)' }} onClick={() => setFlights(flights.filter(item => item.id !== f.id))}>
+                          <Trash2 className="w-4 h-4 hover:text-red-500 transition-colors" />
+                        </button>
+                      </div>
+                    </div>
+                  ))}
+                  
+                  <div style={{ marginTop: '0.5rem', padding: '16px', backgroundColor: 'var(--bg-app)', borderRadius: 'var(--radius-md)', border: '1px dashed var(--border-focus)' }}>
+                    <div style={{ fontSize: '0.85rem', fontWeight: 600, marginBottom: '12px', color: 'var(--color-secondary)' }}>Add New Flight</div>
+                    <form onSubmit={handleAddFlight} style={{ display: 'grid', gridTemplateColumns: '1.5fr 2fr 1.5fr 1fr', gap: '12px', alignItems: 'end' }}>
+                      <Input style={{ marginBottom: 0 }} placeholder="Airline" value={newFlight.airline} onChange={(e) => setNewFlight({ ...newFlight, airline: e.target.value })} required />
+                      <Input style={{ marginBottom: 0 }} placeholder="Routing (e.g. JFK-FCO)" value={newFlight.routing} onChange={(e) => setNewFlight({ ...newFlight, routing: e.target.value })} required />
+                      <Input style={{ marginBottom: 0 }} placeholder="Class" value={newFlight.classType} onChange={(e) => setNewFlight({ ...newFlight, classType: e.target.value })} />
+                      <div style={{ display: 'flex', gap: '8px', alignItems: 'center' }}>
+                        <Input style={{ marginBottom: 0, flex: 1 }} type="number" placeholder="Total Price" value={newFlight.price || ''} onChange={(e) => setNewFlight({ ...newFlight, price: parseFloat(e.target.value) || 0 })} required />
+                        <Button type="submit" variant="secondary" style={{ padding: '10px' }}><Plus className="w-4 h-4" /></Button>
+                      </div>
+                    </form>
                   </div>
                 </div>
-              ))}
-              <form onSubmit={handleAddActivity} style={{ display: 'grid', gridTemplateColumns: '3fr 1fr', gap: '8px', alignItems: 'end', borderTop: '1px solid var(--border-light)', paddingTop: '10px' }}>
-                <Input style={{ marginBottom: 0 }} placeholder="Activity Name" value={newActivity.name} onChange={(e) => setNewActivity({ ...newActivity, name: e.target.value })} required />
-                <div style={{ display: 'flex', gap: '4px', alignItems: 'center' }}>
-                  <Input style={{ marginBottom: 0, flex: 1 }} type="number" placeholder="Price" value={newActivity.price || ''} onChange={(e) => setNewActivity({ ...newActivity, price: parseFloat(e.target.value) || 0 })} required />
-                  <Button type="submit" variant="secondary" style={{ padding: '6px' }}><Plus className="w-4 h-4" /></Button>
+              </Card>
+            )}
+
+            {activeTab === 'commute' && (
+              <Card title="Transfers & Ground Commute">
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem', marginTop: '1rem' }}>
+                  {transfers.map((t) => (
+                    <div key={t.id} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', backgroundColor: 'var(--bg-app)', padding: '12px 16px', borderRadius: 'var(--radius-md)', border: '1px solid var(--border-light)' }}>
+                      <div>
+                        <div style={{ fontSize: '0.9rem', fontWeight: 600, color: 'var(--text-primary)' }}>{t.type}</div>
+                        <div style={{ fontSize: '0.8rem', color: 'var(--text-secondary)', marginTop: '2px' }}>{t.routing}</div>
+                      </div>
+                      <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
+                        <span style={{ fontSize: '0.95rem', fontWeight: 700, color: 'var(--text-primary)' }}>₹{t.price.toLocaleString()}</span>
+                        <button style={{ border: 'none', background: 'transparent', cursor: 'pointer', color: 'var(--text-tertiary)' }} onClick={() => setTransfers(transfers.filter(item => item.id !== t.id))}>
+                          <Trash2 className="w-4 h-4 hover:text-red-500 transition-colors" />
+                        </button>
+                      </div>
+                    </div>
+                  ))}
+                  
+                  <div style={{ marginTop: '0.5rem', padding: '16px', backgroundColor: 'var(--bg-app)', borderRadius: 'var(--radius-md)', border: '1px dashed var(--border-focus)' }}>
+                    <div style={{ fontSize: '0.85rem', fontWeight: 600, marginBottom: '12px', color: 'var(--color-secondary)' }}>Add New Transfer</div>
+                    <form onSubmit={handleAddTransfer} style={{ display: 'grid', gridTemplateColumns: '1fr 2fr 1fr', gap: '12px', alignItems: 'end' }}>
+                      <Input style={{ marginBottom: 0 }} placeholder="Vehicle Type" value={newTransfer.type} onChange={(e) => setNewTransfer({ ...newTransfer, type: e.target.value })} required />
+                      <Input style={{ marginBottom: 0 }} placeholder="Routing Details" value={newTransfer.routing} onChange={(e) => setNewTransfer({ ...newTransfer, routing: e.target.value })} required />
+                      <div style={{ display: 'flex', gap: '8px', alignItems: 'center' }}>
+                        <Input style={{ marginBottom: 0, flex: 1 }} type="number" placeholder="Total Price" value={newTransfer.price || ''} onChange={(e) => setNewTransfer({ ...newTransfer, price: parseFloat(e.target.value) || 0 })} required />
+                        <Button type="submit" variant="secondary" style={{ padding: '10px' }}><Plus className="w-4 h-4" /></Button>
+                      </div>
+                    </form>
+                  </div>
                 </div>
-              </form>
-            </div>
-          </Card>
+              </Card>
+            )}
 
-          {/* Flat Services Fees Card */}
-          <Card title="6. Visa, Insurance & Ancillary Fees">
-            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: '1rem', marginTop: '0.5rem' }}>
-              <div>
-                <label style={{ fontSize: '0.75rem', fontWeight: 600, color: 'var(--text-secondary)' }}>Meals Packages (₹)</label>
-                <Input type="number" value={mealsPrice || ''} onChange={(e) => setMealsPrice(parseFloat(e.target.value) || 0)} />
-              </div>
-              <div>
-                <label style={{ fontSize: '0.75rem', fontWeight: 600, color: 'var(--text-secondary)' }}>Visa Handling Fees (₹)</label>
-                <Input type="number" value={visaPrice || ''} onChange={(e) => setVisaPrice(parseFloat(e.target.value) || 0)} />
-              </div>
-              <div>
-                <label style={{ fontSize: '0.75rem', fontWeight: 600, color: 'var(--text-secondary)' }}>Travel Insurance (₹)</label>
-                <Input type="number" value={insurancePrice || ''} onChange={(e) => setInsurancePrice(parseFloat(e.target.value) || 0)} />
-              </div>
-            </div>
-          </Card>
+            {activeTab === 'activities' && (
+              <Card title="Sightseeing & Activities">
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem', marginTop: '1rem' }}>
+                  {activities.map((a) => (
+                    <div key={a.id} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', backgroundColor: 'var(--bg-app)', padding: '12px 16px', borderRadius: 'var(--radius-md)', border: '1px solid var(--border-light)' }}>
+                      <div style={{ fontSize: '0.9rem', fontWeight: 600, color: 'var(--text-primary)' }}>{a.name}</div>
+                      <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
+                        <span style={{ fontSize: '0.95rem', fontWeight: 700, color: 'var(--text-primary)' }}>₹{a.price.toLocaleString()}</span>
+                        <button style={{ border: 'none', background: 'transparent', cursor: 'pointer', color: 'var(--text-tertiary)' }} onClick={() => setActivities(activities.filter(item => item.id !== a.id))}>
+                          <Trash2 className="w-4 h-4 hover:text-red-500 transition-colors" />
+                        </button>
+                      </div>
+                    </div>
+                  ))}
+                  
+                  <div style={{ marginTop: '0.5rem', padding: '16px', backgroundColor: 'var(--bg-app)', borderRadius: 'var(--radius-md)', border: '1px dashed var(--border-focus)' }}>
+                    <div style={{ fontSize: '0.85rem', fontWeight: 600, marginBottom: '12px', color: 'var(--color-secondary)' }}>Add New Activity</div>
+                    <form onSubmit={handleAddActivity} style={{ display: 'grid', gridTemplateColumns: '3fr 1fr', gap: '12px', alignItems: 'end' }}>
+                      <Input style={{ marginBottom: 0 }} placeholder="Activity/Tour Name" value={newActivity.name} onChange={(e) => setNewActivity({ ...newActivity, name: e.target.value })} required />
+                      <div style={{ display: 'flex', gap: '8px', alignItems: 'center' }}>
+                        <Input style={{ marginBottom: 0, flex: 1 }} type="number" placeholder="Total Price" value={newActivity.price || ''} onChange={(e) => setNewActivity({ ...newActivity, price: parseFloat(e.target.value) || 0 })} required />
+                        <Button type="submit" variant="secondary" style={{ padding: '10px' }}><Plus className="w-4 h-4" /></Button>
+                      </div>
+                    </form>
+                  </div>
+                </div>
+              </Card>
+            )}
 
+            {activeTab === 'fees' && (
+              <Card title="Visa, Insurance & Ancillary Fees">
+                <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: '1.5rem', marginTop: '1rem' }}>
+                  <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
+                    <label style={{ fontSize: '0.85rem', fontWeight: 600, color: 'var(--text-primary)' }}>Meals Packages (₹)</label>
+                    <Input type="number" value={mealsPrice || ''} onChange={(e) => setMealsPrice(parseFloat(e.target.value) || 0)} />
+                  </div>
+                  <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
+                    <label style={{ fontSize: '0.85rem', fontWeight: 600, color: 'var(--text-primary)' }}>Visa Handling Fees (₹)</label>
+                    <Input type="number" value={visaPrice || ''} onChange={(e) => setVisaPrice(parseFloat(e.target.value) || 0)} />
+                  </div>
+                  <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
+                    <label style={{ fontSize: '0.85rem', fontWeight: 600, color: 'var(--text-primary)' }}>Travel Insurance (₹)</label>
+                    <Input type="number" value={insurancePrice || ''} onChange={(e) => setInsurancePrice(parseFloat(e.target.value) || 0)} />
+                  </div>
+                </div>
+              </Card>
+            )}
+          </div>
         </div>
 
         {/* Live Preview Panel */}

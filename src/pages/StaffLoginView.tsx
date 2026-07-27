@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigation } from '../context/NavigationContext';
 import { Lock, User, Plane, ArrowRight } from 'lucide-react';
-import { Card } from '../components/ui/Card';
 import { Input } from '../components/ui/Input';
 import { Button } from '../components/ui/Button';
 import { FloatingBackground } from '../components/FloatingBackground';
@@ -74,7 +73,7 @@ export const StaffLoginView: React.FC = () => {
                 placeholder="name@agency.com"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                icon={<User size={18} />}
+                leftIcon={<User size={18} />}
                 required
               />
             </div>
@@ -91,7 +90,7 @@ export const StaffLoginView: React.FC = () => {
                 placeholder="••••••••"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
-                icon={<Lock size={18} />}
+                leftIcon={<Lock size={18} />}
                 required
               />
             </div>

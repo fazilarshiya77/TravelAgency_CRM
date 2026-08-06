@@ -616,7 +616,12 @@ export const LeadsView: React.FC = () => {
       console.error('Error inserting lead to Supabase:', error);
       // Revert local state
       setLeads((prev) => prev.filter((l) => l.id !== generatedId));
-      alert('Failed to save lead in database: ' + error.message);
+      const isNetworkError = /failed to fetch/i.test(error.message);
+      alert(
+        isNetworkError
+          ? 'Could not reach the database. The Supabase project URL in .env.local is unreachable — double-check VITE_SUPABASE_URL / VITE_SUPABASE_ANON_KEY point to an active Supabase project, then restart the dev server.'
+          : 'Failed to save lead in database: ' + error.message
+      );
     }
     setNewLead({
       name: '',

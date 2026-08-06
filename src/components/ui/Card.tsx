@@ -50,8 +50,8 @@ export const Card: React.FC<CardProps> = ({
       case 'white':
       default:
         return {
-          backgroundColor: 'var(--bg-card)',
-          borderColor: 'var(--border-light)',
+          background: 'rgba(255, 255, 255, 0.6)',
+          borderColor: 'rgba(255, 255, 255, 0.7)',
         };
     }
   };
@@ -62,7 +62,9 @@ export const Card: React.FC<CardProps> = ({
     boxShadow: 'var(--shadow-sm)',
     padding: '1.5rem',
     position: 'relative',
-    transition: 'transform var(--transition-normal), box-shadow var(--transition-normal), border-color var(--transition-normal)',
+    backdropFilter: 'blur(14px) saturate(160%)',
+    WebkitBackdropFilter: 'blur(14px) saturate(160%)',
+    transition: 'transform var(--transition-normal), box-shadow var(--transition-normal), border-color var(--transition-normal), background var(--transition-normal)',
     ...getVariantStyles(),
     ...style,
   };
@@ -70,7 +72,7 @@ export const Card: React.FC<CardProps> = ({
   return (
     <div
       style={cardStyles}
-      className={interactive ? 'crm-card-interactive' : ''}
+      className={`ui-card ${interactive ? 'crm-card-interactive' : ''}`.trim()}
       onMouseEnter={(e) => {
         if (interactive) {
           e.currentTarget.style.transform = 'translateY(-2px)';

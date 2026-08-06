@@ -73,12 +73,15 @@ export const Modal: React.FC<ModalProps> = ({
     >
       <div
         ref={modalRef}
+        className="ui-modal-panel"
         style={{
           width: '100%',
           maxWidth: getWidth(),
-          backgroundColor: '#FFFFFF',
+          background: 'rgba(255, 255, 255, 0.75)',
+          backdropFilter: 'blur(20px) saturate(180%)',
+          WebkitBackdropFilter: 'blur(20px) saturate(180%)',
           borderRadius: 'var(--radius-xl)',
-          border: '1px solid var(--border-light)',
+          border: '1px solid rgba(255, 255, 255, 0.7)',
           boxShadow: 'var(--shadow-lg)',
           display: 'flex',
           flexDirection: 'column',

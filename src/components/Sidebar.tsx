@@ -50,7 +50,9 @@ export const Sidebar: React.FC = () => {
         borderRight: '1px solid rgba(255, 255, 255, 0.08)',
         position: 'relative',
         zIndex: 20,
-        backgroundColor: '#0C182F',
+        background: 'linear-gradient(180deg, rgba(12, 24, 47, 0.9), rgba(8, 17, 34, 0.92))',
+        backdropFilter: 'blur(18px) saturate(160%)',
+        WebkitBackdropFilter: 'blur(18px) saturate(160%)',
         flexShrink: 0,
       }}
     >
@@ -192,7 +194,9 @@ export const Sidebar: React.FC = () => {
           display: 'flex',
           alignItems: 'center',
           gap: '0.65rem',
-          background: 'rgba(0, 0, 0, 0.2)',
+          background: 'rgba(0, 0, 0, 0.22)',
+          backdropFilter: 'blur(8px)',
+          WebkitBackdropFilter: 'blur(8px)',
         }}
       >
         <div

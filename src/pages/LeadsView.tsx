@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { supabase } from '../lib/supabaseClient';
+import { loadLocal, saveLocal } from '../lib/localStore';
 import { Card } from '../components/ui/Card';
 import { Table, type TableColumn } from '../components/ui/Table';
 import { Tag } from '../components/ui/Tag';
@@ -201,11 +202,16 @@ export const LeadsView: React.FC = () => {
   const [leads, setLeads] = useState<LeadItem[]>([]);
   const [loading, setLoading] = useState(true);
 
+  // Persist to browser storage whenever leads change and there's no live database.
+  useEffect(() => {
+    if (!supabase && !loading) saveLocal('crm_leads', leads);
+  }, [leads, loading]);
+
   useEffect(() => {
     const fetchLeads = async () => {
       if (!supabase) {
-        console.warn('Supabase not configured. Running in mock local state mode.');
-        setLeads(initialSeedLeads);
+        console.warn('Supabase not configured. Running in local browser storage mode.');
+        setLeads(loadLocal('crm_leads', initialSeedLeads));
         setLoading(false);
         return;
       }

@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { supabase } from '../lib/supabaseClient';
+import { loadLocal, saveLocal } from '../lib/localStore';
 import { Card } from '../components/ui/Card';
 import { Button } from '../components/ui/Button';
 import { Tag } from '../components/ui/Tag';
@@ -84,6 +85,11 @@ export const TasksView: React.FC = () => {
   const [tasks, setTasks] = useState<TaskItem[]>([]);
   const [loading, setLoading] = useState(true);
 
+  // Persist to browser storage whenever tasks change and there's no live database.
+  useEffect(() => {
+    if (!supabase && !loading) saveLocal('crm_tasks', tasks);
+  }, [tasks, loading]);
+
   // Form states
   const [isAddOpen, setIsAddOpen] = useState(false);
   const [newTitle, setNewTitle] = useState('');
@@ -96,8 +102,8 @@ export const TasksView: React.FC = () => {
   useEffect(() => {
     const fetchTasks = async () => {
       if (!supabase) {
-        console.warn('Supabase not configured. Running in mock local state mode.');
-        setTasks(initialSeedTasks);
+        console.warn('Supabase not configured. Running in local browser storage mode.');
+        setTasks(loadLocal('crm_tasks', initialSeedTasks));
         setLoading(false);
         return;
       }

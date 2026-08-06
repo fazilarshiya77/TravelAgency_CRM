@@ -624,7 +624,7 @@ export const ContactsView: React.FC = () => {
         </div>
         <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
           {/* Grid vs Table switcher */}
-          <div style={{ display: 'flex', border: '1px solid var(--border-light)', borderRadius: 'var(--radius-md)', backgroundColor: '#FFFFFF', padding: '2px', boxShadow: 'var(--shadow-sm)' }}>
+          <div style={{ display: 'flex', border: '1px solid var(--border-light)', borderRadius: 'var(--radius-md)', backgroundColor: 'rgba(255, 255, 255, 0.55)', backdropFilter: 'blur(14px) saturate(180%)', WebkitBackdropFilter: 'blur(14px) saturate(180%)', padding: '2px', boxShadow: 'var(--shadow-sm)' }}>
             <button
               onClick={() => setViewMode('grid')}
               style={{
@@ -743,7 +743,7 @@ export const ContactsView: React.FC = () => {
                       setActiveTab('profile');
                     }}
                     style={{
-                      backgroundColor: '#FFFFFF',
+                      backgroundColor: 'rgba(255, 255, 255, 0.55)', backdropFilter: 'blur(14px) saturate(180%)', WebkitBackdropFilter: 'blur(14px) saturate(180%)',
                       border: '1px solid var(--border-light)',
                       borderRadius: 'var(--radius-xl)',
                       padding: '1.25rem',
@@ -1060,7 +1060,7 @@ export const ContactsView: React.FC = () => {
                             padding: '8px 12px',
                             borderRadius: '6px',
                             border: '1px solid var(--border-light)',
-                            backgroundColor: '#FFFFFF',
+                            backgroundColor: 'rgba(255, 255, 255, 0.55)', backdropFilter: 'blur(14px) saturate(180%)', WebkitBackdropFilter: 'blur(14px) saturate(180%)',
                           }}
                         >
                           <div>
@@ -1111,7 +1111,7 @@ export const ContactsView: React.FC = () => {
                           justifyContent: 'space-between',
                           alignItems: 'center',
                           padding: '10px 12px',
-                          backgroundColor: '#FFFFFF',
+                          backgroundColor: 'rgba(255, 255, 255, 0.55)', backdropFilter: 'blur(14px) saturate(180%)', WebkitBackdropFilter: 'blur(14px) saturate(180%)',
                           borderRadius: '6px',
                           border: '1px solid var(--border-light)',
                         }}
@@ -1342,7 +1342,7 @@ export const ContactsView: React.FC = () => {
             style={{
               width: '100%',
               maxWidth: '540px',
-              backgroundColor: '#FFFFFF',
+              backgroundColor: 'rgba(255, 255, 255, 0.55)', backdropFilter: 'blur(14px) saturate(180%)', WebkitBackdropFilter: 'blur(14px) saturate(180%)',
               borderRadius: 'var(--radius-xl)',
               border: '1px solid var(--border-light)',
               boxShadow: 'var(--shadow-lg)',

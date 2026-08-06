@@ -137,7 +137,7 @@ export const AIAssistantDrawer: React.FC = () => {
         bottom: 0,
         width: '420px',
         maxWidth: '100%',
-        backgroundColor: '#FFFFFF',
+        backgroundColor: 'rgba(255, 255, 255, 0.55)', backdropFilter: 'blur(14px) saturate(180%)', WebkitBackdropFilter: 'blur(14px) saturate(180%)',
         boxShadow: 'var(--shadow-lg)',
         borderLeft: '1px solid var(--border-light)',
         zIndex: 9000,
@@ -276,7 +276,7 @@ export const AIAssistantDrawer: React.FC = () => {
                   <div 
                     key={i}
                     style={{
-                      backgroundColor: '#FFFFFF',
+                      backgroundColor: 'rgba(255, 255, 255, 0.55)', backdropFilter: 'blur(14px) saturate(180%)', WebkitBackdropFilter: 'blur(14px) saturate(180%)',
                       border: '1px solid var(--border-light)',
                       borderRadius: 'var(--radius-md)',
                       padding: '0.75rem 1rem',
@@ -332,7 +332,7 @@ export const AIAssistantDrawer: React.FC = () => {
               padding: '6px 12px',
               borderRadius: '99px',
               border: '1px solid var(--border-light)',
-              backgroundColor: '#FFFFFF',
+              backgroundColor: 'rgba(255, 255, 255, 0.55)', backdropFilter: 'blur(14px) saturate(180%)', WebkitBackdropFilter: 'blur(14px) saturate(180%)',
               fontSize: '0.725rem',
               fontWeight: 500,
               color: 'var(--text-secondary)',
@@ -368,7 +368,7 @@ export const AIAssistantDrawer: React.FC = () => {
         style={{
           padding: '1.25rem 1.5rem',
           borderTop: '1px solid var(--border-light)',
-          backgroundColor: '#FFFFFF',
+          backgroundColor: 'rgba(255, 255, 255, 0.55)', backdropFilter: 'blur(14px) saturate(180%)', WebkitBackdropFilter: 'blur(14px) saturate(180%)',
           display: 'flex',
           gap: '0.75rem',
           alignItems: 'center',

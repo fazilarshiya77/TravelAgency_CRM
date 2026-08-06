@@ -137,7 +137,7 @@ export const DashboardView: React.FC = () => {
               style={{
                 display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center',
                 padding: '1.5rem', border: '1px solid var(--border-light)', borderRadius: 'var(--radius-md)',
-                backgroundColor: '#FFFFFF', cursor: 'pointer', gap: '8px', transition: 'all var(--transition-fast)',
+                backgroundColor: 'rgba(255, 255, 255, 0.55)', backdropFilter: 'blur(14px) saturate(180%)', WebkitBackdropFilter: 'blur(14px) saturate(180%)', cursor: 'pointer', gap: '8px', transition: 'all var(--transition-fast)',
               }}
               onMouseEnter={(e) => { e.currentTarget.style.borderColor = 'var(--color-accent)'; e.currentTarget.style.backgroundColor = 'var(--color-soft-blue)'; }}
               onMouseLeave={(e) => { e.currentTarget.style.borderColor = 'var(--border-light)'; e.currentTarget.style.backgroundColor = '#FFFFFF'; }}
@@ -151,7 +151,7 @@ export const DashboardView: React.FC = () => {
               style={{
                 display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center',
                 padding: '1.5rem', border: '1px solid var(--border-light)', borderRadius: 'var(--radius-md)',
-                backgroundColor: '#FFFFFF', cursor: 'pointer', gap: '8px', transition: 'all var(--transition-fast)',
+                backgroundColor: 'rgba(255, 255, 255, 0.55)', backdropFilter: 'blur(14px) saturate(180%)', WebkitBackdropFilter: 'blur(14px) saturate(180%)', cursor: 'pointer', gap: '8px', transition: 'all var(--transition-fast)',
               }}
               onMouseEnter={(e) => { e.currentTarget.style.borderColor = 'var(--color-accent)'; e.currentTarget.style.backgroundColor = 'var(--color-soft-blue)'; }}
               onMouseLeave={(e) => { e.currentTarget.style.borderColor = 'var(--border-light)'; e.currentTarget.style.backgroundColor = '#FFFFFF'; }}
@@ -165,7 +165,7 @@ export const DashboardView: React.FC = () => {
               style={{
                 display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center',
                 padding: '1.5rem', border: '1px solid var(--border-light)', borderRadius: 'var(--radius-md)',
-                backgroundColor: '#FFFFFF', cursor: 'pointer', gap: '8px', transition: 'all var(--transition-fast)',
+                backgroundColor: 'rgba(255, 255, 255, 0.55)', backdropFilter: 'blur(14px) saturate(180%)', WebkitBackdropFilter: 'blur(14px) saturate(180%)', cursor: 'pointer', gap: '8px', transition: 'all var(--transition-fast)',
               }}
               onMouseEnter={(e) => { e.currentTarget.style.borderColor = 'var(--color-accent)'; e.currentTarget.style.backgroundColor = 'var(--color-soft-blue)'; }}
               onMouseLeave={(e) => { e.currentTarget.style.borderColor = 'var(--border-light)'; e.currentTarget.style.backgroundColor = '#FFFFFF'; }}
@@ -179,7 +179,7 @@ export const DashboardView: React.FC = () => {
               style={{
                 display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center',
                 padding: '1.5rem', border: '1px solid var(--border-light)', borderRadius: 'var(--radius-md)',
-                backgroundColor: '#FFFFFF', cursor: 'pointer', gap: '8px', transition: 'all var(--transition-fast)',
+                backgroundColor: 'rgba(255, 255, 255, 0.55)', backdropFilter: 'blur(14px) saturate(180%)', WebkitBackdropFilter: 'blur(14px) saturate(180%)', cursor: 'pointer', gap: '8px', transition: 'all var(--transition-fast)',
               }}
               onMouseEnter={(e) => { e.currentTarget.style.borderColor = 'var(--color-accent)'; e.currentTarget.style.backgroundColor = 'var(--color-soft-blue)'; }}
               onMouseLeave={(e) => { e.currentTarget.style.borderColor = 'var(--border-light)'; e.currentTarget.style.backgroundColor = '#FFFFFF'; }}

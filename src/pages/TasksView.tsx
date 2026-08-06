@@ -307,7 +307,7 @@ export const TasksView: React.FC = () => {
 
       {/* Task Summary Metrics */}
       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: '1.5rem' }}>
-        <div style={{ backgroundColor: '#FFFFFF', border: '1px solid var(--border-light)', borderRadius: 'var(--radius-xl)', padding: '1.25rem', boxShadow: 'var(--shadow-sm)' }}>
+        <div style={{ backgroundColor: 'rgba(255, 255, 255, 0.55)', backdropFilter: 'blur(14px) saturate(180%)', WebkitBackdropFilter: 'blur(14px) saturate(180%)', border: '1px solid var(--border-light)', borderRadius: 'var(--radius-xl)', padding: '1.25rem', boxShadow: 'var(--shadow-sm)' }}>
           <span style={{ fontSize: '0.725rem', color: 'var(--text-secondary)', textTransform: 'uppercase', fontWeight: 600 }}>Total Tasks</span>
           <div style={{ fontSize: '1.5rem', fontWeight: 700, color: 'var(--text-primary)', marginTop: '4px' }}>
             {tasks.length}
@@ -315,7 +315,7 @@ export const TasksView: React.FC = () => {
           <span style={{ fontSize: '0.675rem', color: 'var(--text-secondary)' }}>All checklist nodes tracked</span>
         </div>
 
-        <div style={{ backgroundColor: '#FFFFFF', border: '1px solid var(--border-light)', borderRadius: 'var(--radius-xl)', padding: '1.25rem', boxShadow: 'var(--shadow-sm)' }}>
+        <div style={{ backgroundColor: 'rgba(255, 255, 255, 0.55)', backdropFilter: 'blur(14px) saturate(180%)', WebkitBackdropFilter: 'blur(14px) saturate(180%)', border: '1px solid var(--border-light)', borderRadius: 'var(--radius-xl)', padding: '1.25rem', boxShadow: 'var(--shadow-sm)' }}>
           <span style={{ fontSize: '0.725rem', color: 'var(--text-secondary)', textTransform: 'uppercase', fontWeight: 600 }}>Awaiting Completion</span>
           <div style={{ fontSize: '1.5rem', fontWeight: 700, color: 'var(--color-peach-dark)', marginTop: '4px' }}>
             {totalPending} Tasks
@@ -323,7 +323,7 @@ export const TasksView: React.FC = () => {
           <span style={{ fontSize: '0.675rem', color: 'var(--text-secondary)' }}>Pending agent updates</span>
         </div>
 
-        <div style={{ backgroundColor: '#FFFFFF', border: '1px solid var(--border-light)', borderRadius: 'var(--radius-xl)', padding: '1.25rem', boxShadow: 'var(--shadow-sm)' }}>
+        <div style={{ backgroundColor: 'rgba(255, 255, 255, 0.55)', backdropFilter: 'blur(14px) saturate(180%)', WebkitBackdropFilter: 'blur(14px) saturate(180%)', border: '1px solid var(--border-light)', borderRadius: 'var(--radius-xl)', padding: '1.25rem', boxShadow: 'var(--shadow-sm)' }}>
           <span style={{ fontSize: '0.725rem', color: 'var(--text-secondary)', textTransform: 'uppercase', fontWeight: 600 }}>Completed Tasks</span>
           <div style={{ fontSize: '1.5rem', fontWeight: 700, color: 'var(--color-success)', marginTop: '4px' }}>
             {completedCount} Tasks

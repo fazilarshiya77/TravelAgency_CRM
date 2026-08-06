@@ -65,7 +65,7 @@ export const Drawer: React.FC<DrawerProps> = ({
           width: '100%',
           maxWidth: width,
           height: '100%',
-          backgroundColor: '#FFFFFF',
+          backgroundColor: 'rgba(255, 255, 255, 0.55)', backdropFilter: 'blur(14px) saturate(180%)', WebkitBackdropFilter: 'blur(14px) saturate(180%)',
           borderLeft: '1px solid var(--border-light)',
           boxShadow: 'var(--shadow-lg)',
           display: 'flex',

@@ -682,7 +682,7 @@ export const PaymentsView: React.FC = () => {
         {selectedPaymentForInvoice && (
           <div style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem', height: '100%' }}>
             
-            <div id="invoice-print-pane" style={{ border: '1px solid var(--border-light)', borderRadius: '12px', padding: '1.5rem', backgroundColor: '#FFFFFF', display: 'flex', flexDirection: 'column', gap: '1.5rem', fontFamily: 'Inter, sans-serif' }}>
+            <div id="invoice-print-pane" style={{ border: '1px solid var(--border-light)', borderRadius: '12px', padding: '1.5rem', backgroundColor: 'rgba(255, 255, 255, 0.55)', backdropFilter: 'blur(14px) saturate(180%)', WebkitBackdropFilter: 'blur(14px) saturate(180%)', display: 'flex', flexDirection: 'column', gap: '1.5rem', fontFamily: 'Inter, sans-serif' }}>
               
               <div style={{ display: 'flex', justifyContent: 'space-between', borderBottom: '2px solid #0EA5E9', paddingBottom: '10px' }}>
                 <div>

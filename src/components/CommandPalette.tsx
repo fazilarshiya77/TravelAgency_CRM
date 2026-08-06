@@ -135,7 +135,7 @@ export const CommandPalette: React.FC = () => {
         style={{
           border: '1px solid var(--border-light)',
           borderRadius: 'var(--radius-xl)',
-          backgroundColor: '#FFFFFF',
+          backgroundColor: 'rgba(255, 255, 255, 0.55)', backdropFilter: 'blur(14px) saturate(180%)', WebkitBackdropFilter: 'blur(14px) saturate(180%)',
           boxShadow: 'var(--shadow-lg)',
           maxHeight: '480px',
           width: '100%',

@@ -759,7 +759,7 @@ export const LeadsView: React.FC = () => {
         </div>
         <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
           {/* Toggle View buttons */}
-          <div style={{ display: 'flex', border: '1px solid var(--border-light)', borderRadius: 'var(--radius-md)', backgroundColor: '#FFFFFF', padding: '2px', boxShadow: 'var(--shadow-sm)' }}>
+          <div style={{ display: 'flex', border: '1px solid var(--border-light)', borderRadius: 'var(--radius-md)', backgroundColor: 'rgba(255, 255, 255, 0.55)', backdropFilter: 'blur(14px) saturate(180%)', WebkitBackdropFilter: 'blur(14px) saturate(180%)', padding: '2px', boxShadow: 'var(--shadow-sm)' }}>
             <button
               onClick={() => setViewMode('kanban')}
               style={{
@@ -932,7 +932,7 @@ export const LeadsView: React.FC = () => {
                       key={lead.id}
                       onClick={() => { setActiveLead(lead); setActiveTab('overview'); }}
                       style={{
-                        backgroundColor: '#FFFFFF',
+                        backgroundColor: 'rgba(255, 255, 255, 0.55)', backdropFilter: 'blur(14px) saturate(180%)', WebkitBackdropFilter: 'blur(14px) saturate(180%)',
                         border: '1px solid var(--border-light)',
                         borderRadius: 'var(--radius-lg)',
                         padding: '1rem',
@@ -994,7 +994,7 @@ export const LeadsView: React.FC = () => {
                             padding: '3px',
                             border: '1px solid var(--border-light)',
                             borderRadius: '4px',
-                            backgroundColor: '#FFFFFF',
+                            backgroundColor: 'rgba(255, 255, 255, 0.55)', backdropFilter: 'blur(14px) saturate(180%)', WebkitBackdropFilter: 'blur(14px) saturate(180%)',
                             cursor: stageKey === 'inquiry' ? 'not-allowed' : 'pointer',
                             fontSize: '0.7rem',
                             opacity: stageKey === 'inquiry' ? 0.3 : 1,
@@ -1010,7 +1010,7 @@ export const LeadsView: React.FC = () => {
                             padding: '3px',
                             border: '1px solid var(--border-light)',
                             borderRadius: '4px',
-                            backgroundColor: '#FFFFFF',
+                            backgroundColor: 'rgba(255, 255, 255, 0.55)', backdropFilter: 'blur(14px) saturate(180%)', WebkitBackdropFilter: 'blur(14px) saturate(180%)',
                             cursor: stageKey === 'booked' ? 'not-allowed' : 'pointer',
                             fontSize: '0.7rem',
                             opacity: stageKey === 'booked' ? 0.3 : 1,
@@ -1323,7 +1323,7 @@ export const LeadsView: React.FC = () => {
                         </div>
                       ) : (
                         activeLead.emailHistory.map((email, idx) => (
-                          <div key={idx} style={{ border: '1px solid var(--border-light)', borderRadius: 'var(--radius-sm)', backgroundColor: '#FFFFFF', overflow: 'hidden' }}>
+                          <div key={idx} style={{ border: '1px solid var(--border-light)', borderRadius: 'var(--radius-sm)', backgroundColor: 'rgba(255, 255, 255, 0.55)', backdropFilter: 'blur(14px) saturate(180%)', WebkitBackdropFilter: 'blur(14px) saturate(180%)', overflow: 'hidden' }}>
                             <div style={{ padding: '6px 10px', backgroundColor: '#F8FAFC', borderBottom: '1px solid var(--border-light)', display: 'flex', justifyContent: 'space-between', fontSize: '0.7rem' }}>
                               <span style={{ fontWeight: 600, color: 'var(--text-primary)' }}>{email.subject}</span>
                               <span style={{ color: 'var(--text-tertiary)' }}>{email.date}</span>
@@ -1471,7 +1471,7 @@ export const LeadsView: React.FC = () => {
             style={{
               width: '100%',
               maxWidth: '520px',
-              backgroundColor: '#FFFFFF',
+              backgroundColor: 'rgba(255, 255, 255, 0.55)', backdropFilter: 'blur(14px) saturate(180%)', WebkitBackdropFilter: 'blur(14px) saturate(180%)',
               borderRadius: 'var(--radius-xl)',
               border: '1px solid var(--border-light)',
               boxShadow: 'var(--shadow-lg)',
@@ -1543,7 +1543,7 @@ export const LeadsView: React.FC = () => {
                       padding: '0.65rem 0.85rem',
                       borderRadius: 'var(--radius-md)',
                       border: '1px solid var(--border-light)',
-                      backgroundColor: '#FFFFFF',
+                      backgroundColor: 'rgba(255, 255, 255, 0.55)', backdropFilter: 'blur(14px) saturate(180%)', WebkitBackdropFilter: 'blur(14px) saturate(180%)',
                       fontSize: '1rem',
                       color: '#0C182F',
                       fontWeight: 600,
@@ -1568,7 +1568,7 @@ export const LeadsView: React.FC = () => {
                       padding: '0.65rem 0.85rem',
                       borderRadius: 'var(--radius-md)',
                       border: '1px solid var(--border-light)',
-                      backgroundColor: '#FFFFFF',
+                      backgroundColor: 'rgba(255, 255, 255, 0.55)', backdropFilter: 'blur(14px) saturate(180%)', WebkitBackdropFilter: 'blur(14px) saturate(180%)',
                       fontSize: '1rem',
                       color: '#0C182F',
                       fontWeight: 600,

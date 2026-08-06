@@ -487,7 +487,7 @@ export const BookingsView: React.FC = () => {
 
       {/* Pipeline Summary Cards */}
       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))', gap: '1.5rem' }}>
-        <div style={{ backgroundColor: '#FFFFFF', border: '1px solid var(--border-light)', borderRadius: 'var(--radius-xl)', padding: '1.25rem', boxShadow: 'var(--shadow-sm)' }}>
+        <div style={{ backgroundColor: 'rgba(255, 255, 255, 0.55)', backdropFilter: 'blur(14px) saturate(180%)', WebkitBackdropFilter: 'blur(14px) saturate(180%)', border: '1px solid var(--border-light)', borderRadius: 'var(--radius-xl)', padding: '1.25rem', boxShadow: 'var(--shadow-sm)' }}>
           <span style={{ fontSize: '0.725rem', color: 'var(--text-secondary)', textTransform: 'uppercase', fontWeight: 600 }}>Total Pipeline Value</span>
           <div style={{ fontSize: '1.5rem', fontWeight: 700, color: 'var(--text-primary)', marginTop: '4px' }}>
             ₹{totalInvoiced.toLocaleString()}
@@ -495,7 +495,7 @@ export const BookingsView: React.FC = () => {
           <span style={{ fontSize: '0.675rem', color: 'var(--text-secondary)' }}>Invoice volume in circulation</span>
         </div>
 
-        <div style={{ backgroundColor: '#FFFFFF', border: '1px solid var(--border-light)', borderRadius: 'var(--radius-xl)', padding: '1.25rem', boxShadow: 'var(--shadow-sm)' }}>
+        <div style={{ backgroundColor: 'rgba(255, 255, 255, 0.55)', backdropFilter: 'blur(14px) saturate(180%)', WebkitBackdropFilter: 'blur(14px) saturate(180%)', border: '1px solid var(--border-light)', borderRadius: 'var(--radius-xl)', padding: '1.25rem', boxShadow: 'var(--shadow-sm)' }}>
           <span style={{ fontSize: '0.725rem', color: 'var(--text-secondary)', textTransform: 'uppercase', fontWeight: 600 }}>Awaiting Approval</span>
           <div style={{ fontSize: '1.5rem', fontWeight: 700, color: 'var(--color-peach-dark)', marginTop: '4px' }}>
             {awaitingCount} Bookings
@@ -503,7 +503,7 @@ export const BookingsView: React.FC = () => {
           <span style={{ fontSize: '0.675rem', color: 'var(--text-secondary)' }}>Requires managers signoff to ticket</span>
         </div>
 
-        <div style={{ backgroundColor: '#FFFFFF', border: '1px solid var(--border-light)', borderRadius: 'var(--radius-xl)', padding: '1.25rem', boxShadow: 'var(--shadow-sm)' }}>
+        <div style={{ backgroundColor: 'rgba(255, 255, 255, 0.55)', backdropFilter: 'blur(14px) saturate(180%)', WebkitBackdropFilter: 'blur(14px) saturate(180%)', border: '1px solid var(--border-light)', borderRadius: 'var(--radius-xl)', padding: '1.25rem', boxShadow: 'var(--shadow-sm)' }}>
           <span style={{ fontSize: '0.725rem', color: 'var(--text-secondary)', textTransform: 'uppercase', fontWeight: 600 }}>Confirmed Ticketing</span>
           <div style={{ fontSize: '1.5rem', fontWeight: 700, color: 'var(--color-success)', marginTop: '4px' }}>
             {activeCount} Bookings Active
@@ -681,7 +681,7 @@ export const BookingsView: React.FC = () => {
                         display: 'flex',
                         gap: '12px',
                         position: 'relative',
-                        backgroundColor: '#FFFFFF',
+                        backgroundColor: 'rgba(255, 255, 255, 0.55)', backdropFilter: 'blur(14px) saturate(180%)', WebkitBackdropFilter: 'blur(14px) saturate(180%)',
                         border: '1px solid var(--border-light)',
                         borderRadius: 'var(--radius-md)',
                         padding: '0.75rem',
@@ -822,7 +822,7 @@ export const BookingsView: React.FC = () => {
                             padding: '8px 12px',
                             borderRadius: '6px',
                             border: '1px solid var(--border-light)',
-                            backgroundColor: '#FFFFFF',
+                            backgroundColor: 'rgba(255, 255, 255, 0.55)', backdropFilter: 'blur(14px) saturate(180%)', WebkitBackdropFilter: 'blur(14px) saturate(180%)',
                           }}
                         >
                           <div>
@@ -939,7 +939,7 @@ export const BookingsView: React.FC = () => {
             style={{
               width: '100%',
               maxWidth: '520px',
-              backgroundColor: '#FFFFFF',
+              backgroundColor: 'rgba(255, 255, 255, 0.55)', backdropFilter: 'blur(14px) saturate(180%)', WebkitBackdropFilter: 'blur(14px) saturate(180%)',
               borderRadius: 'var(--radius-xl)',
               border: '1px solid var(--border-light)',
               boxShadow: 'var(--shadow-lg)',
@@ -1124,7 +1124,7 @@ export const BookingsView: React.FC = () => {
             left: 0,
             right: 0,
             bottom: 0,
-            backgroundColor: '#FFFFFF',
+            backgroundColor: 'rgba(255, 255, 255, 0.55)', backdropFilter: 'blur(14px) saturate(180%)', WebkitBackdropFilter: 'blur(14px) saturate(180%)',
             zIndex: 99999,
             display: 'flex',
             flexDirection: 'column',
@@ -1169,7 +1169,7 @@ export const BookingsView: React.FC = () => {
               padding: '3rem',
               maxWidth: '800px',
               margin: '0 auto',
-              backgroundColor: '#FFFFFF',
+              backgroundColor: 'rgba(255, 255, 255, 0.55)', backdropFilter: 'blur(14px) saturate(180%)', WebkitBackdropFilter: 'blur(14px) saturate(180%)',
               fontFamily: 'system-ui, -apple-system, sans-serif',
               lineHeight: 1.5,
               color: '#1F2937',

@@ -28,7 +28,7 @@ export const Table = <T extends { id: string | number }>({
         borderRadius: 'var(--radius-lg)',
         border: '1px solid var(--border-light)',
         boxShadow: 'var(--shadow-sm)',
-        backgroundColor: '#FFFFFF',
+        backgroundColor: 'rgba(255, 255, 255, 0.55)', backdropFilter: 'blur(14px) saturate(180%)', WebkitBackdropFilter: 'blur(14px) saturate(180%)',
       }}
     >
       <table

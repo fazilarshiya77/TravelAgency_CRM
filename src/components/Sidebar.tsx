@@ -1,6 +1,6 @@
 import React from 'react';
 import { useNavigation, type TabName } from '../context/NavigationContext';
-import logo from '../assets/logo.jpg';
+import logo from '../assets/travel_logo.jfif';
 import {
   LayoutDashboard,
   UserCheck,
